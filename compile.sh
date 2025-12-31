@@ -89,6 +89,8 @@ setup_ksu() {
     echo "CONFIG_KSU_MANUAL_HOOKS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
     wget -L "https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch" -O ksu.patch
     patch -p1 < ksu.patch
+    wget -L "https://github.com/ximi-mojito-test/mojito_krenol/commit/ca324188a90e8889e357766f4cbad5e5e3ba598b.patch" -O ksuselinux.patch
+    patch -p1 < ksuselinux.patch
     patch -p1 < ksumakefile.patch
     patch -p1 < umount.patch
     git clone "$KSU_SETUP_URI" -b "$KSU_BRANCH" KernelSU
