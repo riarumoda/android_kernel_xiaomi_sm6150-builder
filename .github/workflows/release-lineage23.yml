@@ -31,7 +31,7 @@ jobs:
 
       - name: Clone kernel repo prepare for compile
         run: |
-          git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 -b lineage-23.0
+          git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
           cp ksumakefile.patch android_kernel_xiaomi_sm6150/
           cp umount.patch android_kernel_xiaomi_sm6150/
           cp compile.sh android_kernel_xiaomi_sm6150/
@@ -65,7 +65,6 @@ jobs:
       - name: Copy kernel artifacts
         run: |
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
-          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
 
       - name: Zip AnyKernel3 contents
