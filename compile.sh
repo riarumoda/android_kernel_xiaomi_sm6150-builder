@@ -86,7 +86,7 @@ setup_ksu() {
     echo "Setting up KernelSU..."
     echo "CONFIG_KSU=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
     echo "CONFIG_KSU_LSM_SECURITY_HOOKS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-    echo "CONFIG_KSU_MANUAL_HOOKS=y" >> arch/arm64/configs/vendor/vendor/sdmsteppe-perf_defconfig
+    echo "CONFIG_KSU_MANUAL_HOOKS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
     patch -p1 < ksu.patch
     patch -p1 < umount.patch
     git clone "$KSU_SETUP_URI" -b "$KSU_BRANCH" KernelSU
