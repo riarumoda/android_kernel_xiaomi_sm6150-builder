@@ -65,7 +65,6 @@ jobs:
       - name: Copy kernel artifacts
         run: |
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
-          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
 
       - name: Zip AnyKernel3 contents
         run: |
