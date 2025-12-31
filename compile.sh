@@ -88,6 +88,13 @@ add_dtbo() {
   wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/2628183db0d96be8dae38a21f2b09cb10978f423.patch" -O dtbo5.patch
   wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/31f4577af3f8255ae503a5b30d8f68906edde85f.patch" -O dtbo6.patch
   wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/e100f0be027a96d7c65913863acb7c2188bb1cb3.patch" -O dtbo7.patch
+  patch -p1 < dtbo1.patch
+  patch -p1 < dtbo2.patch
+  patch -p1 < dtbo3.patch
+  patch -p1 < dtbo4.patch
+  patch -p1 < dtbo5.patch
+  patch -p1 < dtbo6.patch
+  patch -p1 < dtbo7.patch
 }
 
 # KSU Setup
