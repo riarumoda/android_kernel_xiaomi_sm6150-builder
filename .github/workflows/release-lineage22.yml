@@ -1,4 +1,4 @@
-name: Weekly Kernel Build & Release (LineageOS 23 branch)
+name: Weekly Kernel Build & Release (LineageOS 22.2 branch)
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
 
       - name: Clone kernel repo prepare for compile
         run: |
-          git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
           cp ksumakefile.patch android_kernel_xiaomi_sm6150/
           cp umount.patch android_kernel_xiaomi_sm6150/
           cp compile.sh android_kernel_xiaomi_sm6150/
@@ -71,7 +71,7 @@ jobs:
 
       - name: Zip AnyKernel3 contents
         run: |
-          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage23-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage22.2-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -r9 "../$ZIPNAME" ./*
           echo "$ZIPNAME" > ZIPFILE.txt
@@ -104,8 +104,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: kernel-los23-${{ needs.build.outputs.timestamp }}
-          name: Weekly build - ${{ needs.build.outputs.date }} (LOS23)
+          tag_name: kernel-los22-${{ needs.build.outputs.timestamp }}
+          name: Weekly build - ${{ needs.build.outputs.date }} (LOS22.2)
           draft: false
           prerelease: false
           files: |
