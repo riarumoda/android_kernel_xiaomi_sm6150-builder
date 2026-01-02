@@ -78,7 +78,7 @@ jobs:
           rm -rf clang/
           rm -rf gcc64/
           rm -rf gcc32/
-          zip -rq9 "../$SHANANIGANS" ./*
+          zip -rq0 "../$SHANANIGANS" ./*
           cd ..
 
       - name: Upload artifacts (kernel)
