@@ -29,15 +29,13 @@ jobs:
             libc6 curl libstdc++6 git wget libssl-dev zstd \
             lld python3
 
-      - name: Clone kernel repo prepare for compile
+      - name: Clone kernel repo & prepare for compile
         run: |
           git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
           cp ksumakefile.patch android_kernel_xiaomi_sm6150/
           cp umount.patch android_kernel_xiaomi_sm6150/
           cp compile.sh android_kernel_xiaomi_sm6150/
-      
-      - name: Prepare build script
-        run: chmod +x ./android_kernel_xiaomi_sm6150/compile.sh
+          chmod +x ./android_kernel_xiaomi_sm6150/compile.sh
 
       - name: Compile kernel (${{ matrix.build-type }})
         run: |
@@ -69,20 +67,30 @@ jobs:
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
           sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
 
-      - name: Zip AnyKernel3 contents
+      - name: Zip AnyKernel3 & shenanigans contents
         run: |
-          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage22.2-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage23-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          SHENANIGANS="shenanigans-${{ matrix.build-type }}.zip"
           cd AnyKernel3
-          zip -r9 "../$ZIPNAME" ./*
-          echo "$ZIPNAME" > ZIPFILE.txt
+          zip -rq9 "../$ZIPNAME" ./*
+          cd ..
+          cd android_kernel_xiaomi_sm6150
+          zip -rq9 "../$SHANANIGANS" ./*
+          cd ..
 
-      - name: Upload artifact
+      - name: Upload artifacts (kernel)
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.build-type }}-zip
           path: |
-            ZIPFILE.txt
-            *.zip
+            ./AnyKernel3/*.zip
+      
+      - name: Upload artifacts (shenanigans)
+        uses: actions/upload-artifact@v6
+        with:
+          name: shenanigans-${{ matrix.build-type }}-zip
+          path: |
+            ./android_kernel_xiaomi_sm6150/*.zip
 
   release:
     needs: build

@@ -72,10 +72,10 @@ jobs:
           ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage23-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           SHENANIGANS="shenanigans-${{ matrix.build-type }}.zip"
           cd AnyKernel3
-          zip -r9 "../$ZIPNAME" ./*
+          zip -rq9 "../$ZIPNAME" ./*
           cd ..
           cd android_kernel_xiaomi_sm6150
-          zip -r9 "../$SHANANIGANS" ./*
+          zip -rq9 "../$SHANANIGANS" ./*
           cd ..
 
       - name: Upload artifacts (kernel)
