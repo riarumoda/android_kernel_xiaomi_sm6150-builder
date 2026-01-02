@@ -89,6 +89,7 @@ add_patches() {
   patch -p1 < ln8k4.patch
   patch -p1 < ln8k5.patch
   echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  echo "CONFIG_EROFS_FS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
 }
 
 add_dtbo() {
