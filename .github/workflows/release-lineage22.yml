@@ -69,7 +69,7 @@ jobs:
 
       - name: Zip AnyKernel3 contents
         run: |
-          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage23-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-lineage22.2-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
 
