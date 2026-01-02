@@ -100,8 +100,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: kernel-los23-${{ needs.build.outputs.timestamp }}
-          name: Weekly build - ${{ needs.build.outputs.date }} (LOS23)
+          tag_name: kernel-los231-${{ needs.build.outputs.timestamp }}
+          name: Weekly build - ${{ needs.build.outputs.date }} (LOS23.1)
           draft: false
           prerelease: true
           body: |
