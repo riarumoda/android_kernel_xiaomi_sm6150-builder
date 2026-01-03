@@ -65,7 +65,7 @@ jobs:
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
-          sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          sed -i 's/supported.versions=11-16/supported.versions=15/' AnyKernel3/anykernel.sh
 
       - name: Zip AnyKernel3 contents
         run: |
