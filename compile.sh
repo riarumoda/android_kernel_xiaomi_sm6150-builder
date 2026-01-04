@@ -101,6 +101,11 @@ add_ln8k() {
     patch -p1 < ln8k5.patch
     echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
     sed -i 's|#define LN8000_IIN_CFG_DEFAULT          2000000     /* 2A=2,000,000uA, input current limit */|#define LN8000_IIN_CFG_DEFAULT          3000000     /* 3A=3,000,000uA, input current limit */|' drivers/power/supply/ti/ln8000_charger.h
+    sed -i 's|		ln8000_charger,tdie-prot-disable;|		// ln8000_charger,tdie-prot-disable;|' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
+    sed -i 's|		ln8000_charger,iin-ocp-disable;|		// ln8000_charger,iin-ocp-disable;|' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
+    sed -i 's|		ln8000_charger,tbat-mon-disable;|		// ln8000_charger,tbat-mon-disable;|' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
+    sed -i 's|		ln8000_charger,bus-ocp-threshold = <3750>;|		ln8000_charger,bus-ocp-threshold = <4500>;|' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
+    sed -i 's|		ln8000_charger,bus-ocp-alarm-threshold = <3500>;|		ln8000_charger,bus-ocp-alarm-threshold = <4250>;|' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
   elif [[ "$arg" == "--no-ln8000" ]]; then
     echo "ln8k setup skipped."
   fi
