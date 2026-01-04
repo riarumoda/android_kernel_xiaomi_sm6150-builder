@@ -35,6 +35,13 @@ jobs:
           cp compile.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/compile.sh
 
+      - name: Patch kernel outside of compile script
+        run: |
+          cd android_kernel_xiaomi_sm6150/
+          wget -L "https://github.com/firelzrd/bore-scheduler/raw/refs/heads/main/patches/legacy/linux-4.19-bore/0001-linux4.19.y-bore5.1.0r2.patch" -O bore.patch
+          patch -p1 < bore.patch
+          cd ..
+
       - name: Compile kernel (${{ matrix.build-type }})
         run: |
           if [[ "${{ matrix.build-type }}" == "ksu" ]]; then
