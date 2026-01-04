@@ -153,10 +153,6 @@ compile_kernel() {
   echo -e "\nStarting compilation..."
   sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   ulimit -s unlimited
-  sudo ln -s $(pwd)/drivers/staging/qcacld-3.0 /qcacld
-  sudo ln -s $(pwd)/drivers/staging/qca-wifi-host-cmn /qca-host-cmn
-  echo "CONFIG_LTO_CLANG=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  echo "CONFIG_THINLTO=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   make O=out ARCH=arm64 vendor/sdmsteppe-perf_defconfig
   make O=out ARCH=arm64 vendor/sweet.config
   make -j$(nproc --all) \
@@ -172,10 +168,7 @@ compile_kernel() {
     STRIP=llvm-strip \
     CC=clang \
     CROSS_COMPILE=$GCC64_DIR/bin/aarch64-elf- \
-    CROSS_COMPILE_COMPAT=$GCC32_DIR/bin/arm-eabi- \
-    WLAN_ROOT=/qcacld \
-    WLAN_COMMON_ROOT=/qca-host-cmn \
-    EXTCFLAGS="-I/qcacld -I/qca-host-cmn" 
+    CROSS_COMPILE_COMPAT=$GCC32_DIR/bin/arm-eabi- 
 }
 
 # Main function
