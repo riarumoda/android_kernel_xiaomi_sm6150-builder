@@ -45,7 +45,6 @@ jobs:
           sed -i 's/CONFIG_PSTORE_PMSG=y/# CONFIG_PSTORE_PMSG is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           sed -i 's/CONFIG_PSTORE_RAM=y/# CONFIG_PSTORE_RAM is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           sed -i 's/CONFIG_ZRAM_WRITEBACK=y/# CONFIG_ZRAM_WRITEBACK is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-          sed -i 's/CONFIG_SECCOMP=y/# CONFIG_SECCOMP is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           sed -i 's/CONFIG_CC_STACKPROTECTOR_STRONG=y/CONFIG_CC_STACKPROTECTOR_REGULAR=y/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           sed -i 's/CONFIG_HARDENED_USERCOPY=y/# CONFIG_HARDENED_USERCOPY is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           sed -i 's/CONFIG_SLAB_FREELIST_RANDOM=y/# CONFIG_SLAB_FREELIST_RANDOM is not set/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
