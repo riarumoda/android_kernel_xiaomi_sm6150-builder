@@ -152,6 +152,7 @@ setup_ksu() {
 compile_kernel() {
   echo -e "\nStarting compilation..."
   sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  ulimit -s unlimited
   make O=out ARCH=arm64 vendor/sdmsteppe-perf_defconfig
   make O=out ARCH=arm64 vendor/sweet.config
   make -j$(nproc --all) \
