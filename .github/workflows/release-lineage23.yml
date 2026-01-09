@@ -106,41 +106,41 @@ jobs:
           prerelease: false
           body: |
             Additional information of this build:   
-              Kernel Source:   
-                > [LineageOS/android_kernel_xiaomi_sm6150](https://github.com/LineageOS/android_kernel_xiaomi_sm6150)   
-              Patches:   
-                > [KernelSU: integrate scope-minimized manual hooks - k4.14 v1.7](https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849)   
-                > [ARM64: dts: qcom: xiaomi: sweet: Add ln8000_charger](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/05d8eac3722dcf920b716908d910ee704a77950e)   
-                > [drivers: power: supply: Import ln8000_charger](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/eb3509401751b1e90a9b42e2f51326f2ef943af3)   
-                > [power: supply: ln8000_charger: Drop the use of hardware_info](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/785c8f7976798acfc5cf300a320a43b3f39bcb13)
-                > [power: supply: ln8000_charger: Switch to bq2597x-standalone](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/e26ba40f3fac0238e410f8a29fa72aac012d75d2)   
-                > [power: supply: Import changes for ln8000](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/6e50130d7bc99d1cc64196541af7a178
-                > [add-rtl88xxau-5.6.4.2-drivers.patch](https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-rtl88xxau-5.6.4.2-drivers.patch)
-                > [add-wifi-injection-4.14.patch](https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-wifi-injection-4.14.patch)   
-                > [ksumakefile.patch](https://github.com/riarumoda/android_kernel_xiaomi_sm6150-builder/blob/master/ksumakefile.patch)
-                > [umount.patch](https://github.com/riarumoda/android_kernel_xiaomi_sm6150-builder/blob/master/umount.patch)   
-              Changes to defconfig:
-                > CONFIG_PID_NS=y   
-                > CONFIG_HZ_1000=y   
-                > CONFIG_POSIX_MQUEUE=y   
-                > CONFIG_SYSVIPC=y   
-                > CONFIG_CGROUP_DEVICE=y   
-                > CONFIG_DEVTMPFS=y   
-                > CONFIG_IPC_NS=y   
-                > CONFIG_DEVTMPFS_MOUNT=y   
-                > CONFIG_EROFS_FS=y   
-                > CONFIG_F2FS_FS_COMPRESSION=y   
-                > CONFIG_F2FS_FS_LZ4=y   
-                > CONFIG_FSCACHE=y   
-                > CONFIG_FSCACHE_STATS=y   
-                > CONFIG_FSCACHE_HISTOGRAM=y   
-                > CONFIG_SECURITY_SELINUX_DEVELOP=y   
-              Changes to Makefile:
-                > KBUILD_CFLAGS   += -O3   
-                > LDFLAGS += -O3   
+            Kernel Source:   
+              > [LineageOS/android_kernel_xiaomi_sm6150](https://github.com/LineageOS/android_kernel_xiaomi_sm6150)   
+            Patches:   
+              > [KernelSU: integrate scope-minimized manual hooks - k4.14 v1.7](https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849)   
+              > [ARM64: dts: qcom: xiaomi: sweet: Add ln8000_charger](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/05d8eac3722dcf920b716908d910ee704a77950e)   
+              > [drivers: power: supply: Import ln8000_charger](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/eb3509401751b1e90a9b42e2f51326f2ef943af3)   
+              > [power: supply: ln8000_charger: Drop the use of hardware_info](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/785c8f7976798acfc5cf300a320a43b3f39bcb13)
+              > [power: supply: ln8000_charger: Switch to bq2597x-standalone](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/e26ba40f3fac0238e410f8a29fa72aac012d75d2)   
+              > [power: supply: Import changes for ln8000](https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/6e50130d7bc99d1cc64196541af7a178
+              > [add-rtl88xxau-5.6.4.2-drivers.patch](https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-rtl88xxau-5.6.4.2-drivers.patch)
+              > [add-wifi-injection-4.14.patch](https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-wifi-injection-4.14.patch)   
+              > [ksumakefile.patch](https://github.com/riarumoda/android_kernel_xiaomi_sm6150-builder/blob/master/ksumakefile.patch)
+              > [umount.patch](https://github.com/riarumoda/android_kernel_xiaomi_sm6150-builder/blob/master/umount.patch)   
+            Changes to defconfig:
+              > CONFIG_PID_NS=y   
+              > CONFIG_HZ_1000=y   
+              > CONFIG_POSIX_MQUEUE=y   
+              > CONFIG_SYSVIPC=y   
+              > CONFIG_CGROUP_DEVICE=y   
+              > CONFIG_DEVTMPFS=y   
+              > CONFIG_IPC_NS=y   
+              > CONFIG_DEVTMPFS_MOUNT=y   
+              > CONFIG_EROFS_FS=y   
+              > CONFIG_F2FS_FS_COMPRESSION=y   
+              > CONFIG_F2FS_FS_LZ4=y   
+              > CONFIG_FSCACHE=y   
+              > CONFIG_FSCACHE_STATS=y   
+              > CONFIG_FSCACHE_HISTOGRAM=y   
+              > CONFIG_SECURITY_SELINUX_DEVELOP=y   
+            Changes to Makefile:
+              > KBUILD_CFLAGS   += -O3   
+              > LDFLAGS += -O3   
             Notes:
               > KernelSU scope minimized manual hooks is not added on non-ksu build.   
-              > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci).   
+              > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
           files: |
             artifacts/non-ksu-zip/aosp-perf-neon-non-ksu-*.zip
             artifacts/ksu-zip/aosp-perf-neon-ksu-*.zip
