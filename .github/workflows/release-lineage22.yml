@@ -104,6 +104,12 @@ jobs:
           name: Weekly build - ${{ needs.build.outputs.date }} (LOS22.2)
           draft: false
           prerelease: false
+          body: |
+            Notes:
+              > Kernel has been built with -O3 optimization flag.
+              > Kernel has been built with ln8k charger imported.
+              > KernelSU patches is not added on non-ksu build.   
+              > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml). 
           files: |
             artifacts/non-ksu-zip/aosp-perf-neon-non-ksu-*.zip
             artifacts/ksu-zip/aosp-perf-neon-ksu-*.zip
