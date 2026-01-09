@@ -1,4 +1,4 @@
-name: Weekly builds
+name: Testing
 
 on:
   workflow_dispatch:
