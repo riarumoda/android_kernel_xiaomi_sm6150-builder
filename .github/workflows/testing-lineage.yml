@@ -45,9 +45,10 @@ jobs:
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
-          git clone https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b --depth=1 clang
-          git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git --depth=1 gcc64
-          git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git --depth=1 gcc32
+          wget -L https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch -O f2fscompression.patch
+          echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+          echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+          patch -p1 < f2fscompression.patch
           ./compile.sh --ksu --ln8000
           cd ..
 
