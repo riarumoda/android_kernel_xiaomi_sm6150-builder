@@ -1,4 +1,4 @@
-name: Weekly Kernel Release
+name: Weekly builds
 
 on:
   workflow_dispatch:
@@ -16,24 +16,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        include:
-          - branch: "lineage-23.0"
-            ver_name: "LOS23"
-            tag_id: "los23"
-            supported_ver: "16"
-          - branch: "lineage-22.2"
-            ver_name: "LOS22.2"
-            tag_id: "los22"
-            supported_ver: "15"
-          - branch: "lineage-21"
-            ver_name: "LOS21"
-            tag_id: "los21"
-            supported_ver: "14"
-          - branch: "lineage-20"
-            ver_name: "LOS20"
-            tag_id: "los20"
-            supported_ver: "13"
-        build-type: [non-ksu, ksu]
+        build-type: [lineage-20, lineage-21, lineage-22.2, lineage-23.0, lineage-23.1]
 
     steps:
       - uses: actions/checkout@v6
@@ -46,25 +29,29 @@ jobs:
             libc6 curl libstdc++6 git wget libssl-dev zstd \
             lld python3
 
-      - name: Clone kernel repo & prepare for compile
+      - name: Prepare for compile (${{ matrix.build-type }})
         run: |
-          git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b ${{ matrix.branch }}
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-20
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.1" ]]; then
+            git clone https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.1
+          fi
           cp ksumakefile.patch android_kernel_xiaomi_sm6150/
           cp umount.patch android_kernel_xiaomi_sm6150/
           cp compile.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/compile.sh
 
-      - name: Compile kernel (${{ matrix.build-type }})
+      - name: Compile the kernel
         run: |
-          if [[ "${{ matrix.build-type }}" == "ksu" ]]; then
-            cd android_kernel_xiaomi_sm6150/
-            ./compile.sh --ksu --ln8000
-            cd ..
-          else
-            cd android_kernel_xiaomi_sm6150/
-            ./compile.sh --no-ksu --ln8000
-            cd ..
-          fi
+          cd android_kernel_xiaomi_sm6150/
+          ./compile.sh --ksu --ln8000
+          cd ..
 
       - name: Timestamp
         id: ts
@@ -74,26 +61,34 @@ jobs:
           echo "DATE=$DATE" >> $GITHUB_OUTPUT
           echo "TIME=$TIME" >> $GITHUB_OUTPUT
 
-      - name: Clone AnyKernel3
-        run: git clone https://github.com/riarumoda/AnyKernel3 AnyKernel3 --depth=1
-
-      - name: Copy kernel artifacts
+      - name: Preparing AnyKernel3
         run: |
+          git clone https://github.com/riarumoda/AnyKernel3 AnyKernel3 --depth=1
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
-          sed -i 's/supported.versions=11-16/supported.versions=${{ matrix.supported_ver }}/' AnyKernel3/anykernel.sh
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=13/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=14/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=15/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.1" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          fi
 
-      - name: Zip AnyKernel3 contents
+      - name: Zip kernel contents
         run: |
-          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-${{ matrix.branch }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
 
-      - name: Upload artifacts (kernel)
+      - name: Upload artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.build-type }}-${{ matrix.branch }}-zip
+          name: ${{ matrix.build-type }}-zip
           path: |
             *.zip
 
@@ -123,11 +118,14 @@ jobs:
           prerelease: false
           body: |
             Notes:
-              > Kernel has been built with -O3 optimization flag.
-              > Kernel has been built with ln8k charger imported.
-              > KernelSU patches is not added on non-ksu build.   
+              > Kernel has been built with -O3 optimization flag.   
+              > Kernel has been built with ln8k charger imported.   
+              > Lineage 23.1 build is following [xiaomi-sm6150]( https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150) instead of the official LineageOS repo. ⚠️   
               > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
           files: |
-            artifacts/non-ksu-zip/aosp-perf-neon-non-ksu-*.zip
-            artifacts/ksu-zip/aosp-perf-neon-ksu-*.zip
+            artifacts/lineage-20-zip/*.zip
+            artifacts/lineage-21-zip/*.zip
+            artifacts/lineage-22.2-zip/*.zip
+            artifacts/lineage-23.0-zip/*.zip
+            artifacts/lineage-23.1-zip/*.zip
           overwrite_files: true
