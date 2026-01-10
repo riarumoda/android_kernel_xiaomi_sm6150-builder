@@ -96,24 +96,29 @@ add_ln8k() {
   local arg="$1"
   if [[ "$arg" == "--ln8000" ]]; then
     echo "Adding ln8k patches..."
-    wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/05d8eac3722dcf920b716908d910ee704a77950e.patch" -O ln8k1.patch
-    wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/eb3509401751b1e90a9b42e2f51326f2ef943af3.patch" -O ln8k2.patch
-    wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/785c8f7976798acfc5cf300a320a43b3f39bcb13.patch" -O ln8k3.patch
-    wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/e26ba40f3fac0238e410f8a29fa72aac012d75d2.patch" -O ln8k4.patch
-    wget -L "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/6e50130d7bc99d1cc64196541af7a1780a703253.patch" -O ln8k5.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/e64a07f8d8beea4d7470e9ad4ef1b712d15909b5.patch" -O ln8k1.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/39af7bb35ee22c2e6accde8c413151eda6b985d8.patch" -O ln8k2.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/53133f4d9620f27d3d8fe3e021165cc93036cfb7.patch" -O ln8k3.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/b8a6b2aefce81a1f6f51b9a46113ace0624aebdd.patch" -O ln8k4.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/9d0cf7fd14477f290d7eeb8cb0107f29816935c0.patch" -O ln8k5.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/022c13d583a127e9cc5534c778ea6d250b4a0528.patch" -O ln8k6.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/2024605203354093ed2ec8294b7b0342baaf9c9d.patch" -O ln8k7.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/bc4d92b3b9a6fda3504ef887685ad271e8dfd08d.patch" -O ln8k8.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/39c4206ac149ebde881ca5e7be6f6f6a79f00ec6.patch" -O ln8k9.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/49afb7c867b8ce8e28faa9564a010a7a4daa1eab.patch" -O ln8k10.patch
+    wget -L "https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/2b427aaf5af9748356d06f4048ef1f9b29ebf354.patch" -O ln8k11.patch
     patch -p1 < ln8k1.patch
     patch -p1 < ln8k2.patch
     patch -p1 < ln8k3.patch
     patch -p1 < ln8k4.patch
     patch -p1 < ln8k5.patch
+    patch -p1 < ln8k6.patch
+    patch -p1 < ln8k7.patch
+    patch -p1 < ln8k8.patch
+    patch -p1 < ln8k9.patch
+    patch -p1 < ln8k10.patch
+    patch -p1 < ln8k11.patch
     echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-    sed -i 's/ - 700000//g' drivers/power/supply/ti/ln8000_charger.c
-    sed -i 's/ln8000_charger,bus-ocp-threshold = <3750>;/ln8000_charger,bus-ocp-threshold = <5000>;/g' arch/arm64/boot/dts/qcom/xiaomi/sweet/sweet-sdmmagpie.dtsi
-    sed -i 's/#define BATT_FAST_CHG_CURR\t\t6000/#define BATT_FAST_CHG_CURR\t\t7000/' drivers/power/supply/ti/pd_policy_manager.c
-    sed -i 's/#define BUS_OCP_FOR_QC_CLASS_A\t\t3250000/#define BUS_OCP_FOR_QC_CLASS_A\t\t5000000/' drivers/power/supply/ti/ln8000_charger.h
-    sed -i 's/#define BUS_OCP_FOR_QC_CLASS_B\t\t3750000/#define BUS_OCP_FOR_QC_CLASS_B\t\t5000000/' drivers/power/supply/ti/ln8000_charger.h
-    sed -i 's/info->iin_uA < 70000/info->iin_uA < 10000/' drivers/power/supply/ti/ln8000_charger.c
-    sed -i 's/#define\tBUS_OVP_THRESHOLD\t\t12000/#define\tBUS_OVP_THRESHOLD\t\t14000/' drivers/power/supply/ti/pd_policy_manager.c
     elif [[ "$arg" == "--no-ln8000" ]]; then
     echo "ln8k setup skipped."
   fi
@@ -159,6 +164,8 @@ setup_ksu() {
     wget -L "https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch" -O ksu.patch
     patch -p1 < ksu.patch
     patch -p1 < ksumakefile.patch
+    wget -L "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch" -O kpatch_fix.patch
+    patch -p1 < kpatch_fix.patch
     git clone "$KSU_SETUP_URI" -b "$KSU_BRANCH" KernelSU
     cd drivers
     ln -sfv ../KernelSU/kernel kernelsu
