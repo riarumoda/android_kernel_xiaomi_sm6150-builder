@@ -12,6 +12,8 @@ Compatible with official LineageOS builds for Redmi Note 10 Pro, but since this 
 
 # Credits
 [TBYOOL](https://github.com/tbyool) for the buildscripts and kernel patches.   
-[xiaomi-sm6150](https://github.com/xiaomi-sm6150) for the dtbo and ln8000 patches.   
+[xiaomi-sm6150](https://github.com/xiaomi-sm6150) for the dtbo patches.  
+[PixelOS-Devices-old](https://github.com/PixelOS-Devices-old) for the ln8000 patches.   
 [backslashxx](https://github.com/backslashxx) for ksu scope-minimized manual hooks.   
+[TheSillyOk](https://github.com/TheSillyOk) for kpatch fixup patches.
 [KernelSU-Next](https://github.com/KernelSU-Next) for KernelSU Next.   
