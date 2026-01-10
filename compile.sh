@@ -13,6 +13,8 @@ help_message() {
   echo "  --no-ksu       Disable KernelSU support"
   echo "  --ln8000       Enable ln8k charging support"
   echo "  --no-ln8000    Disable ln8k charging support"
+  echo "  --f2fs         Enable F2FS compression support"
+  echo "  --no-f2fs      Disable F2FS compression support"
   echo "  --help         Show this help message"
 }
 
@@ -73,10 +75,6 @@ add_patches() {
   patch -p1 < rtl88xxau.patch
   wget -L https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-wifi-injection-4.14.patch -O wifi-injection.patch
   patch -p1 < wifi-injection.patch
-  wget -L https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch -O f2fscompression.patch
-  patch -p1 < f2fscompression.patch
-  echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   sed -i 's/CONFIG_HZ_300=y/CONFIG_HZ_1000=y/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_POSIX_MQUEUE=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
@@ -86,8 +84,6 @@ add_patches() {
   echo "CONFIG_IPC_NS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_DEVTMPFS_MOUNT=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_EROFS_FS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_FSCACHE=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_FSCACHE_STATS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_FSCACHE_HISTOGRAM=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
@@ -113,6 +109,19 @@ add_ln8k() {
     echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   elif [[ "$arg" == "--no-ln8000" ]]; then
     echo "ln8k setup skipped."
+  fi
+}
+
+add_f2fs() {
+  local arg="$1"
+  if [[ "$arg" == "--f2fs" ]]; then
+    echo "Adding f2fs compression patches..."
+    wget -L https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch -O f2fscompression.patch
+    patch -p1 < f2fscompression.patch
+    echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+    echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  elif [[ "$arg" == "--no-f2fs" ]]; then
+    echo "f2fs compression setup skipped."
   fi
 }
 
@@ -192,10 +201,11 @@ main() {
   update_path
   add_patches
   add_dtbo
+  add_f2fs "$3"
   add_ln8k "$2"
   setup_ksu "$1"
   compile_kernel
 }
 
 # Run the main function
-main "$1" "$2"
+main "$1" "$2" "$3"

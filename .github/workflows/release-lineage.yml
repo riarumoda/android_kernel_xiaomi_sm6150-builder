@@ -16,7 +16,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [lineage-22.2, lineage-23.0]
+        build-type: [lineage-20, lineage-21, lineage-22.2, lineage-23.0]
 
     steps:
       - uses: actions/checkout@v6
@@ -31,7 +31,11 @@ jobs:
 
       - name: Prepare for compile (${{ matrix.build-type }})
         run: |
-          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-20
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
@@ -43,7 +47,16 @@ jobs:
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
-          ./compile.sh --ksu --ln8000
+          echo "Starting to compile..."
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            ./compile.sh --ksu --ln8000 --no-f2fs
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            ./compile.sh --ksu --ln8000 --no-f2fs
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            ./compile.sh --ksu --ln8000 --f2fs
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            ./compile.sh --ksu --ln8000 --f2fs
+          fi
           cd ..
 
       - name: Timestamp
@@ -60,7 +73,11 @@ jobs:
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
-          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-13/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
@@ -106,9 +123,12 @@ jobs:
           body: |
             Notes:
               > Kernel has been built with -O3 optimization flag.   
-              > Kernel has been built with ln8k charger imported.    
+              > Kernel has been built with ln8k charger imported.   
+              > F2FS Compression patch is not applied on lineage-20 and lineage-21 builds. ⚠️ 
               > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
           files: |
+            artifacts/lineage-20-zip/*.zip
+            artifacts/lineage-21-zip/*.zip
             artifacts/lineage-22.2-zip/*.zip
             artifacts/lineage-23.0-zip/*.zip
           overwrite_files: true
