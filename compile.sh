@@ -107,6 +107,13 @@ add_ln8k() {
     patch -p1 < ln8k4.patch
     patch -p1 < ln8k5.patch
     echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+    sed -i 's/#define LN8000_IIN_CFG_DEFAULT[[:space:]]*2000000/#define LN8000_IIN_CFG_DEFAULT     3000000/' drivers/power/supply/ti/ln8000_charger.c
+    sed -i 's/#define LN8000_IIN_OCP_DEFAULT[[:space:]]*[0-9]\+/#define LN8000_IIN_OCP_DEFAULT     4500000/' drivers/power/supply/ti/ln8000_charger.c
+    sed -i 's/iin_uA < 70000/iin_uA < 20000/' drivers/power/supply/ti/ln8000_charger.c
+    sed -i 's/iin_uA > 400000/iin_uA > 800000/' drivers/power/supply/ti/ln8000_charger.c
+    sed -i 's/vbus_volt > 11000/vbus_volt > 12500/' drivers/power/supply/ti/cp_qc30.c
+    sed -i 's/capacity > 95/capacity > 98/' drivers/power/supply/ti/pd_policy_manager.c
+    sed -i 's/if (!pval.intval)/if (!pval.intval && !chg->cp_psy)/' drivers/power/supply/qcom/smb5-lib.c
     elif [[ "$arg" == "--no-ln8000" ]]; then
     echo "ln8k setup skipped."
   fi
