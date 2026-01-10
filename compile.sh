@@ -90,6 +90,10 @@ add_patches() {
   echo "CONFIG_SECURITY_SELINUX_DEVELOP=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
   sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
+  wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/73681d3069f5a53b7685e149ecfdee8f1c5683ee.patch" -O qcacld.patch
+  patch -p1 < qcacld.patch
+  echo "CONFIG_LTO_CLANG=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  echo "CONFIG_THINLTO=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
 }
 
 add_ln8k() {
@@ -107,7 +111,24 @@ add_ln8k() {
     patch -p1 < ln8k4.patch
     patch -p1 < ln8k5.patch
     echo "CONFIG_CHARGER_LN8000=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  elif [[ "$arg" == "--no-ln8000" ]]; then
+    echo "Patch the ln8k patches itself stage 2..."
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/9328d17e381f5fa6b46797d37b7f2a605b3676f6.patch" -O ln8k6.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/3cb001114420a9656d84b60b667daf7685465049.patch" -O ln8k7.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/4a86d8b4b387cd736e5741ee6550928a3924ae71.patch" -O ln8k8.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d2cf8d96c1e975c6e2d3c69292ab130735a048c3.patch" -O ln8k9.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/eb6a811468c9f12b59ecadad9270ff769f8a8d8a.patch" -O ln8k10.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f7bf38169328af8eb0d79d6c33fcc06fa4c66279.patch" -O ln8k11.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f75c30bf91e809a1448ffd5f0484db802a0995f4.patch" -O ln8k12.patch
+    wget -L "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/ea0fde16625fdaf150e11a3b79b612f851e6e96a.patch" -O ln8k13.patch
+    patch -p1 < ln8k6.patch
+    patch -p1 < ln8k7.patch
+    patch -p1 < ln8k8.patch
+    patch -p1 < ln8k9.patch
+    patch -p1 < ln8k10.patch
+    patch -p1 < ln8k11.patch
+    patch -p1 < ln8k12.patch
+    patch -p1 < ln8k13.patch
+    elif [[ "$arg" == "--no-ln8000" ]]; then
     echo "ln8k setup skipped."
   fi
 }

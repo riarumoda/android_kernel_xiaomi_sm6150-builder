@@ -1,8 +1,8 @@
-name: Testing
+name: Staging builds
 
 on:
   workflow_dispatch:
-    
+
 permissions:
   contents: write
 
@@ -45,18 +45,16 @@ jobs:
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
-          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            wget -L https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch -O f2fscompression.patch
-            echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-            echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-            patch -p1 < f2fscompression.patch
+          echo "Starting to compile..."
+          if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
+            ./compile.sh --ksu --ln8000 --no-f2fs
+          elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
+            ./compile.sh --ksu --ln8000 --no-f2fs
+          elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            ./compile.sh --ksu --ln8000 --f2fs
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            wget -L https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch -O f2fscompression.patch
-            echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-            echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-            patch -p1 < f2fscompression.patch
+            ./compile.sh --ksu --ln8000 --f2fs
           fi
-          ./compile.sh --ksu --ln8000
           cd ..
 
       - name: Timestamp
@@ -74,11 +72,11 @@ jobs:
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
           if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=13/' AnyKernel3/anykernel.sh
+            sed -i 's/supported.versions=11-16/supported.versions=11-13/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=14/' AnyKernel3/anykernel.sh
+            sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=15/' AnyKernel3/anykernel.sh
+            sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
