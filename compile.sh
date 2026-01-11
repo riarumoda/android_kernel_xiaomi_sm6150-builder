@@ -89,6 +89,7 @@ add_patches() {
   echo "CONFIG_SECURITY_SELINUX_DEVELOP=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_FS_ENCRYPTION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_EXT4_ENCRYPTION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  echo "CONFIG_EXT4_FS_ENCRYPTION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
   sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
 }
