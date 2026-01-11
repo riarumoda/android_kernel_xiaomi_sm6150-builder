@@ -76,7 +76,6 @@ add_patches() {
   wget -L https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel-builder/-/raw/main/patches/4.14/add-wifi-injection-4.14.patch -O wifi-injection.patch
   patch -p1 < wifi-injection.patch
   sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  sed -i 's/CONFIG_HZ_300=y/CONFIG_HZ_1000=y/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_POSIX_MQUEUE=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_SYSVIPC=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_CGROUP_DEVICE=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
@@ -88,6 +87,8 @@ add_patches() {
   echo "CONFIG_FSCACHE_STATS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_FSCACHE_HISTOGRAM=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   echo "CONFIG_SECURITY_SELINUX_DEVELOP=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  echo "CONFIG_FS_ENCRYPTION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+  echo "CONFIG_EXT4_FS_ENCRYPTION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
   sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
   sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
 }
