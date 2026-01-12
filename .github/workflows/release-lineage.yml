@@ -60,13 +60,13 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
-            ./compile.sh --ksu --ln8000 --no-f2fs
+            ./compile.sh --ksu --ln8000 --no-f2fs --no-fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
-            ./compile.sh --ksu --ln8000 --no-f2fs
+            ./compile.sh --ksu --ln8000 --no-f2fs --fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            ./compile.sh --ksu --ln8000 --f2fs
+            ./compile.sh --ksu --ln8000 --f2fs --fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            ./compile.sh --ksu --ln8000 --f2fs
+            ./compile.sh --ksu --ln8000 --f2fs --fix-kpatch
           fi
           cd ..
 
@@ -119,13 +119,13 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-20" ]]; then
-            ./compile.sh --no-ksu --ln8000 --no-f2fs
+            ./compile.sh --no-ksu --ln8000 --no-f2fs --no-fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-21" ]]; then
-            ./compile.sh --no-ksu --ln8000 --no-f2fs
+            ./compile.sh --no-ksu --ln8000 --no-f2fs --no-fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            ./compile.sh --no-ksu --ln8000 --f2fs
+            ./compile.sh --no-ksu --ln8000 --f2fs --no-fix-kpatch
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            ./compile.sh --no-ksu --ln8000 --f2fs
+            ./compile.sh --no-ksu --ln8000 --f2fs --no-fix-kpatch
           fi
           cd ..
 
@@ -189,7 +189,8 @@ jobs:
           body: |
             Notes:
               > Kernel has been built with ln8k charger imported.   
-              > KPatch fixup and susfs patches is not applied on no-ksu builds. ⚠️   
+              > KPatch fixup is not applied on no-ksu builds and on lineage-20 build. ⚠️   
+              > SUSFS patches is not applied on no-ksu builds. ⚠️   
               > F2FS Compression patch is not applied on lineage-20 and lineage-21 builds. ⚠️   
               > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
           files: |

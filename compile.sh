@@ -8,14 +8,23 @@
 # Help message
 help_message() {
   echo "Usage: $0 [OPTIONS]"
+  echo " "
+  echo "Examples:"
+  echo "  $0 --ksu --ln8000 --f2fs --fix-kpatch"
+  echo "  $0 --no-ksu --no-ln8000 --no-f2fs --no-fix-kpatch"
+  echo " "
   echo "Options:"
-  echo "  --ksu          Enable KernelSU support"
-  echo "  --no-ksu       Disable KernelSU support"
-  echo "  --ln8000       Enable ln8k charging support"
-  echo "  --no-ln8000    Disable ln8k charging support"
-  echo "  --f2fs         Enable F2FS compression support"
-  echo "  --no-f2fs      Disable F2FS compression support"
-  echo "  --help         Show this help message"
+  echo "  --ksu           Enable KernelSU support"
+  echo "  --no-ksu        Disable KernelSU support"
+  echo "  --ln8000        Enable ln8k charging support"
+  echo "  --no-ln8000     Disable ln8k charging support"
+  echo "  --f2fs          Enable F2FS compression support"
+  echo "  --no-f2fs       Disable F2FS compression support"
+  echo "  --fix-kpatch    Apply kpatch fixup"
+  echo "  --no-fix-kpatch Disable kpatch fixup"
+  echo "  --help          Show this help message"
+  echo " "
+  echo "Warning! parameter must be in order to make this script work properly."
 }
 
 # Environment setup
@@ -158,6 +167,7 @@ add_dtbo() {
 # KSU Setup
 setup_ksu() {
   local arg="$1"
+  local fix_kpatch="$2"
   if [[ "$arg" == "--ksu" ]]; then
     echo "Setting up KernelSU..."
     echo "CONFIG_KSU=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
@@ -169,8 +179,13 @@ setup_ksu() {
     wget -L "https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch" -O ksu.patch
     patch -p1 < ksu.patch
     patch -p1 < ksumakefile.patch
-    wget -L "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch" -O kpatch_fix.patch
-    patch -p1 < kpatch_fix.patch
+    if [[ "$fix_kpatch" == "--fix-kpatch" ]]; then
+      echo "Applying kpatch fixup fix..."
+      wget -L "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch" -O kpatch_fix.patch
+      patch -p1 < kpatch_fix.patch
+    elif [[ "$fix_kpatch" == "--no-fix-kpatch" ]]; then
+      echo "Kpatch fixup skipped."
+    fi
     wget -L "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch" -O susfs.patch
     patch -p1 < susfs.patch
     git clone "$KSU_SETUP_URI" -b "$KSU_BRANCH" KernelSU
@@ -221,6 +236,14 @@ main() {
       exit 0
       ;;
   esac
+  case "$1" in
+    --no-ksu)
+      if [[ "$4" == "--fix-kpatch" ]]; then
+        echo "Error: --no-ksu cannot be used with --fix-kpatch"
+        exit 1
+      fi
+      ;;
+  esac
   setup_environment
   setup_toolchain
   update_path
@@ -228,9 +251,9 @@ main() {
   add_dtbo
   add_f2fs "$3"
   add_ln8k "$2"
-  setup_ksu "$1"
+  setup_ksu "$1" "$4"
   compile_kernel
 }
 
 # Run the main function
-main "$1" "$2" "$3"
+main "$1" "$2" "$3" "$4"
