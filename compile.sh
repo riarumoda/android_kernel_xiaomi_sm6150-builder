@@ -195,6 +195,11 @@ setup_ksu() {
     cd KernelSU
     wget -L "https://raw.githubusercontent.com/TheSillyOk/kernel_ls_patches/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch" -O ksun_susfs.patch
     patch -p1 < ksun_susfs.patch
+    git config user.email "riaru-ksu@riaru.com"
+    git config user.name "riaru-ksu"
+    git config set advice.addEmbeddedRepo true
+    git add .
+    git commit -m "cleanup: applied ksun-patches patches before build"
     cd ..
   elif [[ "$arg" == "--no-ksu" ]]; then
     echo "KernelSU setup skipped."
@@ -205,7 +210,7 @@ setup_ksu() {
 compile_kernel() {
   echo -e "\nStarting compilation..."
   sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
-  git config user.email "riarucompile@riaru.com"
+  git config user.email "riaru-compile@riaru.com"
   git config user.name "riaru-compile"
   git config set advice.addEmbeddedRepo true
   git add .
