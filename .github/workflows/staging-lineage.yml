@@ -93,7 +93,6 @@ jobs:
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
           cd ..
-          mv AnyKernel3/*.zip ./
 
       - name: Prepare for compile (${{ matrix.build-type }}, No KSU)
         run: |
@@ -153,7 +152,6 @@ jobs:
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
           cd ..
-          mv AnyKernel3/*.zip ./
 
       - name: Upload artifacts (All builds)
         uses: actions/upload-artifact@v6
