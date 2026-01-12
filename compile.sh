@@ -173,12 +173,12 @@ setup_ksu() {
     patch -p1 < kpatch_fix.patch
     wget -L "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch" -O susfs.patch
     patch -p1 < susfs.patch
-    wget -L "https://raw.githubusercontent.com/TheSillyOk/kernel_ls_patches/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch" -O ksun_susfs.patch
-    patch -p1 < ksun_susfs.patch
     git clone "$KSU_SETUP_URI" -b "$KSU_BRANCH" KernelSU
     cd drivers
     ln -sfv ../KernelSU/kernel kernelsu
     cd ..
+    wget -L "https://raw.githubusercontent.com/TheSillyOk/kernel_ls_patches/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch" -O ksun_susfs.patch
+    patch -p1 < ksun_susfs.patch
   elif [[ "$arg" == "--no-ksu" ]]; then
     echo "KernelSU setup skipped."
   fi
