@@ -228,6 +228,7 @@ compile_kernel() {
         CROSS_COMPILE=aarch64-linux-android- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
         CLANG_TRIPLE=aarch64-linux-gnu-
+}
 
 # Main function
 main() {
