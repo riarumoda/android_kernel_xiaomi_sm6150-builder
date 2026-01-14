@@ -1,4 +1,4 @@
-name: Testing (rsuntk)
+name: Testing (zako)
 
 on:
   workflow_dispatch:
@@ -35,7 +35,7 @@ jobs:
             libc6 curl libstdc++6 git wget libssl-dev zstd \
             lld python3
 
-      - name: Prepare for compile (${{ matrix.build-type }}, KSU_RSUN, NONE)
+      - name: Prepare for compile (${{ matrix.build-type }}, KSU_ZAKO, NONE)
         run: |
           if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
             rm -rf android_kernel_xiaomi_sm6150
@@ -48,18 +48,18 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
-      - name: Compile the kernel (sweet, KSU_RSUN, NONE)
+      - name: Compile the kernel (sweet, KSU_ZAKO, NONE)
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_RSUN --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_RSUN --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=NONE
           fi
           cd ..
 
-      - name: Preparing AnyKernel3 (sweet, KSU_RSUN, NONE)
+      - name: Preparing AnyKernel3 (sweet, KSU_ZAKO, NONE)
         run: |
           if [ -d "$PWD/AnyKernel3" ]; then
             rm -rf AnyKernel3
@@ -74,9 +74,9 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
 
-      - name: Zip kernel contents (sweet, KSU_RSUN, NONE)
+      - name: Zip kernel contents (sweet, KSU_ZAKO, NONE)
         run: |
-          ZIPNAME="aosp-perf-neon-ksu_rsun-none-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-ksu_zako-none-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
           cd ..
