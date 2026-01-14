@@ -1,0 +1,170 @@
+name: Weekly builds (KSU Next)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 5 * * 0'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.ts.outputs.TIME }}
+      date: ${{ steps.ts.outputs.DATE }}
+    strategy:
+      matrix:
+        build-type: [lineage-22.2, lineage-23.0]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Timestamp
+        id: ts
+        run: |
+          DATE=$(date +'%Y%m%d')
+          TIME=$(date +'%s')
+          echo "DATE=$DATE" >> $GITHUB_OUTPUT
+          echo "TIME=$TIME" >> $GITHUB_OUTPUT
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc build-essential bison flex zip p7zip-full \
+            libc6 curl libstdc++6 git wget libssl-dev zstd \
+            lld python3
+
+      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+        run: |
+          if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
+            rm -rf android_kernel_xiaomi_sm6150
+          fi
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          fi
+          cp build.sh android_kernel_xiaomi_sm6150/
+          chmod +x ./android_kernel_xiaomi_sm6150/build.sh
+
+      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+        run: |
+          cd android_kernel_xiaomi_sm6150/
+          echo "Starting to compile..."
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
+          fi
+          cd ..
+
+      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+        run: |
+          if [ -d "$PWD/AnyKernel3" ]; then
+            rm -rf AnyKernel3
+          fi
+          git clone https://github.com/riarumoda/AnyKernel3 AnyKernel3 --depth=1
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          fi
+
+      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+        run: |
+          ZIPNAME="aosp-perf-neon-ksu_next-f2fs_compression-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          cd AnyKernel3
+          zip -rq9 "../$ZIPNAME" ./*
+          cd ..
+
+      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+        run: |
+          if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
+            rm -rf android_kernel_xiaomi_sm6150
+          fi
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          fi
+          cp build.sh android_kernel_xiaomi_sm6150/
+          chmod +x ./android_kernel_xiaomi_sm6150/build.sh
+
+      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+        run: |
+          cd android_kernel_xiaomi_sm6150/
+          echo "Starting to compile..."
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
+          fi
+          cd ..
+
+      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+        run: |
+          if [ -d "$PWD/AnyKernel3" ]; then
+            rm -rf AnyKernel3
+          fi
+          git clone https://github.com/riarumoda/AnyKernel3 AnyKernel3 --depth=1
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
+          cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
+          if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          fi
+
+      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+        run: |
+          ZIPNAME="aosp-perf-neon-ksu_next-none-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          cd AnyKernel3
+          zip -rq9 "../$ZIPNAME" ./*
+          cd ..
+
+      - name: Upload artifacts (All builds)
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.build-type }}-zip
+          path: |
+            *.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: List downloaded zips
+        run: ls -lah artifacts
+
+      - name: Create Release and Upload builds
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: kernel-ksunext-${{ needs.build.outputs.timestamp }}
+          name: ${{ needs.build.outputs.date }} - KSU Next
+          draft: false
+          prerelease: false
+          body: |
+            Notes:
+              > This build have integration with KernelSU-Next.
+              > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
+          files: |
+            artifacts/lineage-22.2-zip/*.zip
+            artifacts/lineage-23.0-zip/*.zip
+          overwrite_files: true
