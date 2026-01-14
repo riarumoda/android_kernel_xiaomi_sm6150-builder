@@ -86,7 +86,7 @@ setup_environment() {
     # TheSillyOk's KSU_NEXT Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     export SILLY_SUSFS_GENERAL_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
-    export SILLY_SUSFS_KSU_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
+    export SILLY_SUSFS_KSU_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
 }
 
 # Setup toolchain function
