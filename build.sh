@@ -189,6 +189,7 @@ add_ksu() {
         echo "CONFIG_KSU_MANUAL_HOOKS=y" >> $MAIN_DEFCONFIG
         # KernelSU Next Specific: SUSFS & KPatch Next support
         if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
+            echo "Applying SUSFS and KPatch Next for KernelSU Next..."
             wget -qO- $SILLY_SUSFS_GENERAL_PATCH | patch -s -p1
             wget -qO- $SILLY_SUSFS_KSU_NEXT_PATCH | patch -s -p1
             wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
@@ -210,10 +211,10 @@ compile_kernel() {
     git config user.name $GIT_NAME
     git config set advice.addEmbeddedRepo true
     git add .
-    git commit -m "cleanup: applied patches before build"
+    git commit -m "cleanup: applied patches before build" &> /dev/null
     # Start compilation
     echo "Starting kernel compilation..."
-    make -s O=out ARCH=arm64 $COMPILE_MAIN_DEFCONFIG $COMPILE_SUBS_DEFCONFIG
+    make -s O=out ARCH=arm64 $COMPILE_MAIN_DEFCONFIG $COMPILE_SUBS_DEFCONFIG &> /dev/null
     make -j$(nproc --all) \
         O=out \
         ARCH=arm64 \
