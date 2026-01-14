@@ -83,10 +83,8 @@ setup_environment() {
         echo "Invalid F2FS selector. Use --f2fs=F2FS_TBYOOL or --f2fs=NONE."
         exit 1
     fi
-    # TheSillyOk's KSU_NEXT Exports
+    # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
-    export SILLY_SUSFS_GENERAL_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
-    export SILLY_SUSFS_KSU_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
 }
 
 # Setup toolchain function
@@ -176,6 +174,7 @@ add_ksu() {
         git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
         wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
         wget -qO- $KSU_AVC_PATCH | patch -s -p1
+        wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         # Manual Symlink Creation
         cd drivers
         ln -sfv ../KernelSU/kernel kernelsu
@@ -187,25 +186,6 @@ add_ksu() {
         echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
         echo "CONFIG_KSU_LSM_SECURITY_HOOKS=y" >> $MAIN_DEFCONFIG
         echo "CONFIG_KSU_MANUAL_HOOKS=y" >> $MAIN_DEFCONFIG
-        # KernelSU Next Specific: SUSFS & KPatch Next support
-        if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
-            echo "Applying SUSFS and KPatch Next for KernelSU Next..."
-            wget -qO- $SILLY_SUSFS_GENERAL_PATCH | patch -s -p1
-            wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
-            # manuall patch for KernelSU Next SUSFS patches
-            cd KernelSU
-            wget -qO- $SILLY_SUSFS_KSU_NEXT_PATCH | patch -s -p1
-            git config user.email $GIT_EMAIL
-            git config user.name $GIT_NAME
-            git config set advice.addEmbeddedRepo true
-            git add .
-            git commit -m "cleanup: applied ksun-patches patches before build" &> /dev/null
-            cd ..
-            # Manual Config Enablement
-            echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
-        fi
     else
         echo "No KernelSU to set up."
     fi
