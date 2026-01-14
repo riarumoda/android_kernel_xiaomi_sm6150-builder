@@ -35,22 +35,18 @@ setup_environment() {
         export KSU_SETUP_URI="https://github.com/KernelSU-Next/KernelSU-Next"
         export KSU_BRANCH="legacy"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
-        export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/62205970b6a07a828c7587e675616f4f0835d82d.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_KOWX" ]]; then
         export KSU_SETUP_URI="https://github.com/KOWX712/KernelSU/"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
-        export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/4d68fc7bde18bbf106db19481847c1044f22b0dd.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
-        export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/4d68fc7bde18bbf106db19481847c1044f22b0dd.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
         export KSU_SETUP_URI=""
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
-        export KSU_AVC_PATCH=""
     else
         echo "Invalid KernelSU selector. Use --ksu=KSU_NEXT, --ksu=KSU_KOWX, --ksu=KSU_BLXX, or --ksu=NONE."
         exit 1
@@ -177,12 +173,6 @@ add_ksu() {
         wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
-        # Dont do avc patch on KernelSU-Next
-        if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
-            echo "Skipping AVC patch for KernelSU-Next."
-        else
-            wget -qO- $KSU_AVC_PATCH | patch -s -p1
-        fi
         # Manual Symlink Creation
         cd drivers
         ln -sfv ../KernelSU/kernel kernelsu
