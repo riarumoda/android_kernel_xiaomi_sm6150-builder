@@ -35,10 +35,10 @@ setup_environment() {
         export KSU_SETUP_URI="https://github.com/KernelSU-Next/KernelSU-Next"
         export KSU_BRANCH="legacy"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
-    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_KOWX" ]]; then
-        export KSU_SETUP_URI="https://github.com/KOWX712/KernelSU/"
-        export KSU_BRANCH="master"
-        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
+    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_RSUN" ]]; then
+        export KSU_SETUP_URI="https://github.com/rsuntk/KernelSU"
+        export KSU_BRANCH="main"
+        export KSU_GENERAL_PATCH="https://github.com/rksuorg/kernel_patches/raw/refs/heads/master/manual_hook/kernel-4.14.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
@@ -48,7 +48,7 @@ setup_environment() {
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
     else
-        echo "Invalid KernelSU selector. Use --ksu=KSU_NEXT, --ksu=KSU_KOWX, --ksu=KSU_BLXX, or --ksu=NONE."
+        echo "Invalid KernelSU selector. Use --ksu=KSU_NEXT, --ksu=KSU_RSUN, --ksu=KSU_BLXX, or --ksu=NONE."
         exit 1
     fi
     # DTBO Exports
