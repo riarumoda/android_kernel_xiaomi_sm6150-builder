@@ -10,8 +10,8 @@ setup_environment() {
     # Imports
     local MAIN_DEFCONFIG_IMPORT="$1"
     local SUBS_DEFCONFIG_IMPORT="$2"
-    local KERNELSU_SEELCTOR="$3"
-    local F2FS_SEELCTOR="$4"
+    local KERNELSU_SELECTOR="$3"
+    local F2FS_SELECTOR="$4"
     # Maintainer info
     export KBUILD_BUILD_USER=riaru
     export KBUILD_BUILD_HOST=ximiedits
@@ -31,22 +31,22 @@ setup_environment() {
     export COMPILE_MAIN_DEFCONFIG="vendor/$MAIN_DEFCONFIG_IMPORT"
     export COMPILE_SUBS_DEFCONFIG="vendor/$SUBS_DEFCONFIG_IMPORT"
     # KernelSU Settings
-    if [[ "$KERNELSU_SEELCTOR" == "--ksu=KSU_NEXT" ]]; then
+    if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_NEXT" ]]; then
         export KSU_SETUP_URI="https://github.com/KernelSU-Next/KernelSU-Next"
         export KSU_BRANCH="legacy"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
         export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/62205970b6a07a828c7587e675616f4f0835d82d.patch"
-    elif [[ "$KERNELSU_SEELCTOR" == "--ksu=KSU_KOWX" ]]; then
+    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_KOWX" ]]; then
         export KSU_SETUP_URI="https://github.com/KOWX712/KernelSU/"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
         export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/4d68fc7bde18bbf106db19481847c1044f22b0dd.patch"
-    elif [[ "$KERNELSU_SEELCTOR" == "--ksu=KSU_BLXX" ]]; then
+    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
         export KSU_AVC_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/4d68fc7bde18bbf106db19481847c1044f22b0dd.patch"
-    elif [[ "$KERNELSU_SEELCTOR" == "--ksu=NONE" ]]; then
+    elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
         export KSU_SETUP_URI=""
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
@@ -75,9 +75,9 @@ setup_environment() {
     export LN8K_PATCH10="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/49afb7c867b8ce8e28faa9564a010a7a4daa1eab.patch"
     export LN8K_PATCH11="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/2b427aaf5af9748356d06f4048ef1f9b29ebf354.patch"
     # F2FS Exports
-    if [[ "$F2FS_SEELCTOR" == "--f2fs=F2FS_TBYOOL" ]]; then
+    if [[ "$F2FS_SELECTOR" == "--f2fs=F2FS_TBYOOL" ]]; then
         export F2FS_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch"
-    elif [[ "$F2FS_SEELCTOR" == "--f2fs=NONE" ]]; then
+    elif [[ "$F2FS_SELECTOR" == "--f2fs=NONE" ]]; then
         export F2FS_PATCH=""
     else
         echo "Invalid F2FS selector. Use --f2fs=F2FS_TBYOOL or --f2fs=NONE."
