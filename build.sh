@@ -38,7 +38,7 @@ setup_environment() {
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
         export KSU_SETUP_URI="https://github.com/SukiSU-Ultra/SukiSU-Ultra"
         export KSU_BRANCH="builtin"
-        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
+        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
