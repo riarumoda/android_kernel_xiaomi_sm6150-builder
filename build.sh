@@ -199,7 +199,7 @@ add_ksu() {
             git config user.name $GIT_NAME
             git config set advice.addEmbeddedRepo true
             git add .
-            git commit -m "cleanup: applied ksun-patches patches before build"
+            git commit -m "cleanup: applied ksun-patches patches before build" &> /dev/null
             cd ..
             # Manual Config Enablement
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
