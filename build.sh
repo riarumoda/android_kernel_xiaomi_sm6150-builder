@@ -173,8 +173,13 @@ add_ksu() {
         echo "Setting up KernelSU..."
         git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
         wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-        wget -qO- $KSU_AVC_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
+        # Dont do avc patch on KernelSU-Next
+        if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
+            echo "Skipping AVC patch for KernelSU-Next."
+        else
+            wget -qO- $KSU_AVC_PATCH | patch -s -p1
+        fi
         # Manual Symlink Creation
         cd drivers
         ln -sfv ../KernelSU/kernel kernelsu
