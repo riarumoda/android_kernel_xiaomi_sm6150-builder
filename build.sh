@@ -85,6 +85,8 @@ setup_environment() {
     fi
     # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
+    # KernelSU umount patch
+    export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
 }
 
 # Setup toolchain function
@@ -173,6 +175,7 @@ add_ksu() {
         echo "Setting up KernelSU..."
         git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
         wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
+        wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         # Dont do avc patch on KernelSU-Next
         if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
