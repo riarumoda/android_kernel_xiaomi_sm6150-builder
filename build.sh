@@ -191,8 +191,16 @@ add_ksu() {
         if [[ "$KSU_SETUP_URI" == *"KernelSU-Next"* ]]; then
             echo "Applying SUSFS and KPatch Next for KernelSU Next..."
             wget -qO- $SILLY_SUSFS_GENERAL_PATCH | patch -s -p1
-            wget -qO- $SILLY_SUSFS_KSU_NEXT_PATCH | patch -s -p1
             wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
+            # manuall patch for KernelSU Next SUSFS patches
+            cd KernelSU
+            wget -qO- $SILLY_SUSFS_KSU_NEXT_PATCH | patch -s -p1
+            git config user.email $GIT_EMAIL
+            git config user.name $GIT_NAME
+            git config set advice.addEmbeddedRepo true
+            git add .
+            git commit -m "cleanup: applied ksun-patches patches before build"
+            cd ..
             # Manual Config Enablement
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
