@@ -165,6 +165,8 @@ add_ksu() {
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         if [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
+            # Apply manual hook
+            wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
             # Clone xx's repository
             git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
             # Manual symlink creation
@@ -176,12 +178,13 @@ add_ksu() {
             sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
+            # Disable Kprobes for now
+            # echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
+            # echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
+            # echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
+            # echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
+            # echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
+            # echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
