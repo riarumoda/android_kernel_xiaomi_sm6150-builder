@@ -137,18 +137,6 @@ add_patches() {
     echo "CONFIG_FS_ENCRYPTION=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_EXT4_ENCRYPTION=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_EXT4_FS_ENCRYPTION=y" >> $MAIN_DEFCONFIG
-    # Try to add framebuffer output to screen directly, might remove later
-    echo "CONFIG_FRAMEBUFFER_CONSOLE=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_VT=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_VT_CONSOLE=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_DUMMY_CONSOLE=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FB=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FONTS=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FONT_8x8=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FONT_8x16=y" >> $MAIN_DEFCONFIG
-    sed -i 's/CONFIG_CMDLINE="cgroup_disable=pressure"/CONFIG_CMDLINE="cgroup_disable=pressure console=tty0 ignore_loglevel fbcon=map:0"/' $MAIN_DEFCONFIG
-    echo "CONFIG_CMDLINE_FORCE=y" >> $MAIN_DEFCONFIG
     # Apply kernel rename to defconfig
     sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' $MAIN_DEFCONFIG
     # Apply O3 flags into Kernel Makefile
