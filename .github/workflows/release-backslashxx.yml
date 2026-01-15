@@ -163,6 +163,7 @@ jobs:
           body: |
             Notes:
               > This build have integration with backslashxx's KernelSU.   
+              > This build include kprobes, kretprobes and ksu_temper_syscall_table integrated into KernelSU.
               > KernelSU latest manager can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
           files: |
             artifacts/lineage-22.2-zip/*.zip
