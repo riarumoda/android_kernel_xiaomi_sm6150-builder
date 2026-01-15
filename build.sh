@@ -147,7 +147,7 @@ add_patches() {
     echo "CONFIG_FONTS=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_FONT_8x8=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_FONT_8x16=y" >> $MAIN_DEFCONFIG
-    sed -i 's/CONFIG_CMDLINE="cgroup_disable=pressure"/CONFIG_CMDLINE="cgroup_disable=pressure" console=tty0 ignore_loglevel fbcon=map:0/' $MAIN_DEFCONFIG
+    sed -i 's/CONFIG_CMDLINE="cgroup_disable=pressure"/CONFIG_CMDLINE="cgroup_disable=pressure console=tty0 ignore_loglevel fbcon=map:0"/' $MAIN_DEFCONFIG
     echo "CONFIG_CMDLINE_FORCE=y" >> $MAIN_DEFCONFIG
     # Apply kernel rename to defconfig
     sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' $MAIN_DEFCONFIG
