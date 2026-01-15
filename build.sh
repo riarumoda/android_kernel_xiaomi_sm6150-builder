@@ -32,8 +32,8 @@ setup_environment() {
     export COMPILE_SUBS_DEFCONFIG="vendor/$SUBS_DEFCONFIG_IMPORT"
     # KernelSU Settings
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
-        export KSU_SETUP_URI="https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh"
-        export KSU_BRANCH="tmp-builtin"
+        export KSU_SETUP_URI="https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh"
+        export KSU_BRANCH="builtin"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
@@ -170,7 +170,7 @@ add_ksu() {
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         # Setup KernelSU based on selection
-        if [[ "$KSU_SETUP_URI" == *"SukiSU-Ultra"* ]]; then
+        if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
             # Enable manual hooks for SukiSU
             echo "Applying scope-minimized manual hooks patch..."
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
@@ -183,6 +183,10 @@ add_ksu() {
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_MANUAL_HOOK_AUTO_SETUID_HOOK=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_MANUAL_HOOK_AUTO_INITRC_HOOK=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_MANUAL_HOOK_AUTO_INPUT_HOOK=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_MULTI_MANAGER_SUPPORT=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
