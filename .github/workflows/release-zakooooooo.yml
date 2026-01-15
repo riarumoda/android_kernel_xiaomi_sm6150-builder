@@ -1,4 +1,4 @@
-name: Weekly builds (SukiSU)
+name: Weekly builds (ReSukiSU)
 
 on:
   workflow_dispatch:
@@ -163,8 +163,8 @@ jobs:
           prerelease: false
           body: |
             Notes:
-              > This build have integration with SukiSU-Ultra.
-              > KernelSU latest manager can be found in [here](github.com/SukiSU-Ultra/SukiSU-Ultra/releases).   
+              > This build have integration with ReSukiSU.
+              > KernelSU latest manager can be found in [here](https://t.me/ReSukiSU/4).   
           files: |
             artifacts/lineage-22.2-zip/*.zip
             artifacts/lineage-23.0-zip/*.zip
