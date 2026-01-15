@@ -171,21 +171,14 @@ add_ksu() {
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         # Setup KernelSU based on selection
         if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
-            # Enable manual hooks for SukiSU
-            # echo "Applying scope-minimized manual hooks patch..."
-            # wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
             # Execute SukiSU setup script
             echo "Starting SukiSU setup..."
             curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
             # Add SUSFS support
-            # echo "Adding SUSFS support..."
-            # wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
+            echo "Adding SUSFS support..."
+            wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_MANUAL_HOOK_AUTO_SETUID_HOOK=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_MANUAL_HOOK_AUTO_INITRC_HOOK=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_MANUAL_HOOK_AUTO_INPUT_HOOK=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_MULTI_MANAGER_SUPPORT=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
