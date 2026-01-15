@@ -34,7 +34,7 @@ setup_environment() {
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
         export KSU_SETUP_URI="https://github.com/SukiSU-Ultra/SukiSU-Ultra"
         export KSU_BRANCH="builtin"
-        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
+        export KSU_GENERAL_PATCH="https://github.com/SukiSU-Ultra/SukiSU_patch/raw/refs/heads/main/hooks/scope_min_manual_hooks_v1.6.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
@@ -167,8 +167,6 @@ add_ksu() {
     if [ -n "$KSU_SETUP_URI" ]; then
         echo "Setting up KernelSU..."
         git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
-        # comment out manual hook, now trying to do it via kprobes
-        # wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         if [[ "$KSU_SETUP_URI" == *"SukiSU-Ultra"* ]]; then
@@ -178,6 +176,8 @@ add_ksu() {
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
+            # Enable manual hooks for SukiSU
+            wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
         fi
         # Manual Symlink Creation
         cd drivers
@@ -187,16 +187,18 @@ add_ksu() {
         sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
         sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
         # Manual Config Enablement
-        echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_KSU_SYSCALL_HOOK=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
-        # comment out manual hook, now trying to do it via kprobes
-        # echo "CONFIG_KSU_MANUAL_HOOKS=y" >> $MAIN_DEFCONFIG
+        if [[ "$KSU_SETUP_URI" == *"SukiSU-Ultra"* ]]; then
+            echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
+        elif [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
+            echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
+        fi
     else
         echo "No KernelSU to set up."
     fi
