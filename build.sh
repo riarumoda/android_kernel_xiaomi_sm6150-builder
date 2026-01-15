@@ -34,7 +34,7 @@ setup_environment() {
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
         export KSU_SETUP_URI="https://github.com/SukiSU-Ultra/SukiSU-Ultra"
         export KSU_BRANCH="builtin"
-        export KSU_GENERAL_PATCH="https://github.com/SukiSU-Ultra/SukiSU_patch/raw/refs/heads/main/4.14/ksu_hooks_4.14.patch"
+        export KSU_GENERAL_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/96dac2c53a2fbc5c47ce0c4ba4906287f960556d.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
@@ -80,6 +80,8 @@ setup_environment() {
     export SILLY_SUSFS_FS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
+    # KernelSU reboot addon patch
+    export KSU_REBOOT_PATCH="https://github.com/pascua28/android_kernel_samsung_sm7150/commit/1300a4eeda9014acdf6f7efc6c2220abc50b85f9.patch"
 }
 
 # Setup toolchain function
@@ -178,6 +180,7 @@ add_ksu() {
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
             # Enable manual hooks for SukiSU
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
+            wget -qO- $KSU_REBOOT_PATCH | patch -s -p1
         fi
         # Manual Symlink Creation
         cd drivers
