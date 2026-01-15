@@ -1,4 +1,4 @@
-name: Weekly builds (KSU Next)
+name: Weekly builds (SukiSU)
 
 on:
   workflow_dispatch:
@@ -16,7 +16,8 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [lineage-22.2, lineage-23.0]
+        build-type: [
+          lineage-22.2, lineage-23.0]
 
     steps:
       - uses: actions/checkout@v6
@@ -37,7 +38,7 @@ jobs:
             libc6 curl libstdc++6 git wget libssl-dev zstd \
             lld python3
 
-      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_ZAKO, F2FS_TBYOOL)
         run: |
           if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
             rm -rf android_kernel_xiaomi_sm6150
@@ -50,18 +51,18 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
-      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_ZAKO, F2FS_TBYOOL)
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=F2FS_TBYOOL
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=F2FS_TBYOOL
           fi
           cd ..
 
-      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_ZAKO, F2FS_TBYOOL)
         run: |
           if [ -d "$PWD/AnyKernel3" ]; then
             rm -rf AnyKernel3
@@ -76,14 +77,14 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
 
-      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_NEXT, F2FS_TBYOOL)
+      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_ZAKO, F2FS_TBYOOL)
         run: |
-          ZIPNAME="aosp-perf-neon-ksu_next-f2fs_compression-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-ksu_zako-f2fs_compression-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
           cd ..
 
-      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+      - name: Preparing to compile (${{ matrix.build-type }}, sweet, KSU_ZAKO, NONE)
         run: |
           if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
             rm -rf android_kernel_xiaomi_sm6150
@@ -96,18 +97,18 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
-      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+      - name: Compile the kernel (${{ matrix.build-type }}, sweet, KSU_ZAKO, NONE)
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-22.2" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "lineage-23.0" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_ZAKO --f2fs=NONE
           fi
           cd ..
 
-      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, sweet, KSU_ZAKO, NONE)
         run: |
           if [ -d "$PWD/AnyKernel3" ]; then
             rm -rf AnyKernel3
@@ -122,9 +123,9 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
 
-      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_NEXT, NONE)
+      - name: Zip kernel contents (${{ matrix.build-type }}, sweet, KSU_ZAKO, NONE)
         run: |
-          ZIPNAME="aosp-perf-neon-ksu_next-none-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
+          ZIPNAME="aosp-perf-neon-ksu_zako-none-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}-sweet.zip"
           cd AnyKernel3
           zip -rq9 "../$ZIPNAME" ./*
           cd ..
@@ -162,8 +163,8 @@ jobs:
           prerelease: false
           body: |
             Notes:
-              > This build have integration with KernelSU-Next.
-              > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci) or in [here](https://github.com/KernelSU-Next/KernelSU-Next/actions/workflows/build-manager-ci.yml).   
+              > This build have integration with SukiSU-Ultra.
+              > KernelSU latest manager can be found in [here](github.com/SukiSU-Ultra/SukiSU-Ultra/releases).   
           files: |
             artifacts/lineage-22.2-zip/*.zip
             artifacts/lineage-23.0-zip/*.zip
