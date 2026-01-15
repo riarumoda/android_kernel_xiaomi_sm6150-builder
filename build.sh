@@ -32,9 +32,9 @@ setup_environment() {
     export COMPILE_SUBS_DEFCONFIG="vendor/$SUBS_DEFCONFIG_IMPORT"
     # KernelSU Settings
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
-        export KSU_SETUP_URI="https://github.com/SukiSU-Ultra/SukiSU-Ultra"
+        export KSU_SETUP_URI="https://github.com/ReSukiSU/ReSukiSU"
         export KSU_BRANCH="builtin"
-        export KSU_GENERAL_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/96dac2c53a2fbc5c47ce0c4ba4906287f960556d.patch"
+        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
@@ -80,8 +80,6 @@ setup_environment() {
     export SILLY_SUSFS_FS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
-    # KernelSU reboot addon patch
-    export KSU_REBOOT_PATCH="https://github.com/pascua28/android_kernel_samsung_sm7150/commit/1300a4eeda9014acdf6f7efc6c2220abc50b85f9.patch"
 }
 
 # Setup toolchain function
@@ -171,7 +169,7 @@ add_ksu() {
         git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
-        if [[ "$KSU_SETUP_URI" == *"SukiSU-Ultra"* ]]; then
+        if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
             echo "Adding SUSFS support..."
             wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
             # Manual Config Enablement
@@ -179,8 +177,8 @@ add_ksu() {
             echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
             # Enable manual hooks for SukiSU
+            echo "Applying scope-minimized manual hooks patch..."
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-            wget -qO- $KSU_REBOOT_PATCH | patch -s -p1
         fi
         # Manual Symlink Creation
         cd drivers
@@ -190,7 +188,7 @@ add_ksu() {
         sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
         sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
         # Manual Config Enablement
-        if [[ "$KSU_SETUP_URI" == *"SukiSU-Ultra"* ]]; then
+        if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
         elif [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
