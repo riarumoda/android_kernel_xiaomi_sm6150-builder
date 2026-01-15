@@ -171,8 +171,8 @@ add_ksu() {
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         # Setup KernelSU based on selection
         if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
-            # Execute SukiSU setup script
-            echo "Starting SukiSU setup..."
+            # Execute setup script
+            echo "Starting setup..."
             curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
             # Add SUSFS support
             echo "Adding SUSFS support..."
