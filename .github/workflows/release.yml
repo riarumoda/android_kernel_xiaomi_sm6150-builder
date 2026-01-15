@@ -191,13 +191,17 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            Notes:
-              > Use the F2FS Compression if your OS is using F2FS Compression for the userdata partition.   
-              > Use the No F2FS if your OS is not using F2FS Compression for the userdata partition.
-              > This build have integration with backslashxx's KernelSU.   
-              > This build include kprobes, kretprobes and ksu_temper_syscall_table integrated into KernelSU.
-              > KernelSU latest manager can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
+            > [!NOTE]
+            > This build have integration with backslashxx's KernelSU.   
+            > This build include kprobes, kretprobes and ksu_temper_syscall_table integrated into KernelSU.
+            > KernelSU latest manager can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
+               
+            > [!WARNING]
+            > Use the F2FS Compression ZIP if your ROM is using F2FS Compression.   
+            > Use LineageOS 23 builds if you are on Android 16, for Android 15 and lowwer please use LineageOS 22 builds.
           files: |
-            artifacts/lineage-22.2-zip/*.zip
-            artifacts/lineage-23.0-zip/*.zip
+            artifacts/lineage-22-noksu-zip/*.zip
+            artifacts/lineage-23-noksu-zip/*.zip
+            artifacts/lineage-22-ksu-zip/*.zip
+            artifacts/lineage-23-ksu-zip/*.zip
           overwrite_files: true
