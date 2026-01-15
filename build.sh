@@ -178,8 +178,8 @@ add_ksu() {
             echo "Starting SukiSU setup..."
             curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
             # Add SUSFS support
-            echo "Adding SUSFS support..."
-            wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
+            # echo "Adding SUSFS support..."
+            # wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             # echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
