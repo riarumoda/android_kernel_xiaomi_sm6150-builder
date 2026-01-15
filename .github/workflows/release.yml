@@ -175,13 +175,19 @@ jobs:
       - name: List downloaded zips
         run: ls -lah artifacts
 
+      - name: Timestamp
+        id: ts
+        run: |
+          FANCYDATE=$(date +'%Y/%m/%d')
+          echo "FANCYDATE=$FANCYDATE" >> $GITHUB_OUTPUT
+
       - name: Create Release and Upload builds
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: kernel-weekly-${{ needs.build.outputs.timestamp }}
-          name: Weekly - ${{ needs.build.outputs.date }}
+          name: Weekly - ${{ steps.ts.outputs.FANCYDATE }}
           draft: false
           prerelease: false
           body: |
