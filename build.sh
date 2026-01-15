@@ -193,13 +193,11 @@ add_ksu() {
             echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
         elif [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_EXTRAS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_KRETPROBES_SUCOMPAT=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
         fi
     else
