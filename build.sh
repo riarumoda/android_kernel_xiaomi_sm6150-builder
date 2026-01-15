@@ -32,7 +32,7 @@ setup_environment() {
     export COMPILE_SUBS_DEFCONFIG="vendor/$SUBS_DEFCONFIG_IMPORT"
     # KernelSU Settings
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
-        export KSU_SETUP_URI="https://github.com/ReSukiSU/ReSukiSU"
+        export KSU_SETUP_URI="https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh"
         export KSU_BRANCH="builtin"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
@@ -166,32 +166,37 @@ add_f2fs() {
 add_ksu() {
     if [ -n "$KSU_SETUP_URI" ]; then
         echo "Setting up KernelSU..."
-        git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
+        # Apply umount backport and kpatch fixes
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
+        # Setup KernelSU based on selection
         if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
-            echo "Adding SUSFS support..."
-            wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
-            # Manual Config Enablement
-            echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
             # Enable manual hooks for SukiSU
             echo "Applying scope-minimized manual hooks patch..."
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-        fi
-        # Manual Symlink Creation
-        cd drivers
-        ln -sfv ../KernelSU/kernel kernelsu
-        cd ..
-        # Manual Makefile and Kconfig Editing
-        sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
-        sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
-        # Manual Config Enablement
-        if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
+            # Execute ReSukiSU setup script
+            echo "Starting ReSukiSU setup..."
+            curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
+            # Add SUSFS support
+            echo "Adding SUSFS support..."
+            wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
+            # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
         elif [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
+            # Clone xx's repository
+            git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
+            # Manual symlink creation
+            cd drivers
+            ln -sfv ../KernelSU/kernel kernelsu
+            cd ..
+            # Manual Makefile and Kconfig Editing
+            sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
+            sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
+            # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
