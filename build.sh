@@ -31,11 +31,7 @@ setup_environment() {
     export COMPILE_MAIN_DEFCONFIG="vendor/$MAIN_DEFCONFIG_IMPORT"
     export COMPILE_SUBS_DEFCONFIG="vendor/$SUBS_DEFCONFIG_IMPORT"
     # KernelSU Settings
-    if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
-        export KSU_SETUP_URI="https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh"
-        export KSU_BRANCH="builtin"
-        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
-    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
+    if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
@@ -44,7 +40,7 @@ setup_environment() {
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
     else
-        echo "Invalid KernelSU selector. Use --ksu=KSU_ZAKO, --ksu=KSU_BLXX, or --ksu=NONE."
+        echo "Invalid KernelSU selector. Use --ksu=KSU_BLXX, or --ksu=NONE."
         exit 1
     fi
     # DTBO Exports
@@ -77,7 +73,6 @@ setup_environment() {
     fi
     # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
-    export SILLY_SUSFS_FS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
 }
@@ -169,21 +164,7 @@ add_ksu() {
         # Apply umount backport and kpatch fixes
         wget -qO- $KSU_UMOUNT_PATCH | patch -s -p1
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
-        # Setup KernelSU based on selection
-        if [[ "$KSU_SETUP_URI" == *"ReSukiSU"* ]]; then
-            # Execute setup script
-            echo "Starting setup..."
-            curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
-            # Add SUSFS support
-            echo "Adding SUSFS support..."
-            wget -qO- $SILLY_SUSFS_FS_PATCH | patch -s -p1
-            # Manual Config Enablement
-            echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_MULTI_MANAGER_SUPPORT=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
-            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
-        elif [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
+        if [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
             # Clone xx's repository
             git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
             # Manual symlink creation
@@ -241,7 +222,7 @@ main() {
     echo "Validating input arguments..."
     if [ $# -ne 4 ]; then
         echo "Usage: $0 <MAIN_DEFCONFIG_IMPORT> <SUBS_DEFCONFIG_IMPORT> <KERNELSU_SELECTOR> <F2FS_SELECTOR>"
-        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL"
+        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL"
         exit 1
     fi
     if [ ! -f "arch/arm64/configs/vendor/$1" ]; then
