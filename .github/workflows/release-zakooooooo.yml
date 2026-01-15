@@ -1,4 +1,4 @@
-name: Weekly builds (ReSukiSU)
+name: Weekly builds (SukiSU)
 
 on:
   workflow_dispatch:
@@ -158,13 +158,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: kernel-zako-${{ needs.build.outputs.timestamp }}
-          name: ${{ needs.build.outputs.date }} - ReSukiSU
+          name: ${{ needs.build.outputs.date }} - SukiSU
           draft: false
           prerelease: false
           body: |
             Notes:
-              > This build have integration with ReSukiSU.   
-              > This build include scope-minimized hooks v1.8, susfs 2.0.0 integrated into ReSukiSU.
+              > This build have integration with SukiSU.   
+              > This build include scope-minimized hooks v1.8, susfs 2.0.0 integrated into SukiSU.
               > KernelSU latest manager can be found in [here](https://t.me/ReSukiSU/4).   
           files: |
             artifacts/lineage-22.2-zip/*.zip
