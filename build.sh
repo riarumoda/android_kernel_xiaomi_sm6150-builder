@@ -33,7 +33,7 @@ setup_environment() {
     # KernelSU Settings
     if [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_ZAKO" ]]; then
         export KSU_SETUP_URI="https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh"
-        export KSU_BRANCH="builtin"
+        export KSU_BRANCH="tmp-builtin"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_BLXX" ]]; then
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
