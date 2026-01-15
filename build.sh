@@ -210,12 +210,14 @@ add_ksu() {
 # Compile kernel function
 compile_kernel() {
     # Do a git cleanup before compiling
-    echo "Cleaning up git before compiling..."
-    git config user.email $GIT_EMAIL
-    git config user.name $GIT_NAME
-    git config set advice.addEmbeddedRepo true
-    git add .
-    git commit -m "cleanup: applied patches before build" &> /dev/null
+    if [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
+        echo "Cleaning up git before compiling..."
+        git config user.email $GIT_EMAIL
+        git config user.name $GIT_NAME
+        git config set advice.addEmbeddedRepo true
+        git add .
+        git commit -m "cleanup: applied patches before build" &> /dev/null
+    fi
     # Start compilation
     echo "Starting kernel compilation..."
     make -s O=out ARCH=arm64 $COMPILE_MAIN_DEFCONFIG $COMPILE_SUBS_DEFCONFIG &> /dev/null
