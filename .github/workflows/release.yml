@@ -198,7 +198,7 @@ jobs:
                
             > [!WARNING]
             > Use the F2FS Compression ZIP if your ROM is using F2FS Compression.   
-            > Use LineageOS 23 builds if you are on Android 16, for Android 15 and lowwer please use LineageOS 22 builds.
+            > Use LineageOS 23 builds if you are on Android 16, for Android 15 and lower please use LineageOS 22 builds.
           files: |
             artifacts/lineage-22-noksu-zip/*.zip
             artifacts/lineage-23-noksu-zip/*.zip
