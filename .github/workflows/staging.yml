@@ -162,10 +162,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: kernel-weekly-${{ needs.build.outputs.timestamp }}
-          name: Weekly - ${{ steps.ts.outputs.FANCYDATE }}
+          tag_name: kernel-staging-${{ needs.build.outputs.timestamp }}
+          name: Staging - ${{ steps.ts.outputs.FANCYDATE }}
           draft: false
-          prerelease: false
+          prerelease: true
           body: |
             > [!NOTE]
             > This build have integration with backslashxx's KernelSU.   
