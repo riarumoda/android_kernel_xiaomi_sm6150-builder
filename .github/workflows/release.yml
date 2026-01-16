@@ -193,7 +193,6 @@ jobs:
           body: |
             > [!NOTE]
             > This build have integration with backslashxx's KernelSU.   
-            > This build include kprobes, kretprobes and ksu_temper_syscall_table integrated into KernelSU.
             > KernelSU latest manager can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
                
             > [!WARNING]
