@@ -178,13 +178,6 @@ add_ksu() {
             sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
-            # Disable Kprobes for now
-            # echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KPROBES=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_HAVE_KPROBES=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KPROBE_EVENTS=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KRETPROBES=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_HAVE_SYSCALL_TRACEPOINTS=y" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
