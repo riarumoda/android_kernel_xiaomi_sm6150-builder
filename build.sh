@@ -190,6 +190,7 @@ add_ksu() {
             sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
