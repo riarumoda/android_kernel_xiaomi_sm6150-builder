@@ -103,8 +103,8 @@ setup_toolchain() {
 
 # Add patches function
 add_patches() {
-    echo "Applying patches..."
     # Apply DTBO patches
+    echo "Applying DTBO patches..."
     wget -qO- $DTBO_PATCH1 | patch -s -p1
     wget -qO- $DTBO_PATCH2 | patch -s -p1
     wget -qO- $DTBO_PATCH3 | patch -s -p1
@@ -112,6 +112,7 @@ add_patches() {
     wget -qO- $DTBO_PATCH5 | patch -s -p1
     wget -qO- $DTBO_PATCH6 | patch -s -p1
     # Apply LN8K patches
+    echo "Applying LN8K patches..."
     wget -qO- $LN8K_PATCH1 | patch -s -p1
     wget -qO- $LN8K_PATCH2 | patch -s -p1
     wget -qO- $LN8K_PATCH3 | patch -s -p1
@@ -124,7 +125,14 @@ add_patches() {
     wget -qO- $LN8K_PATCH10 | patch -s -p1
     wget -qO- $LN8K_PATCH11 | patch -s -p1
     echo "CONFIG_CHARGER_LN8000=y" >> $MAIN_DEFCONFIG
+    # Apply Simple GPU Algorithm patches
+    echo "Applying Simple GPU Algorithm patches..."
+    wget -qO- $SIMPLEGPU_PATCH1 | patch -s -p1
+    wget -qO- $SIMPLEGPU_PATCH2 | patch -s -p1
+    wget -qO- $SIMPLEGPU_PATCH3 | patch -s -p1
+    echo "CONFIG_SIMPLE_GPU_ALGORITHM=y"
     # Apply general config patches
+    echo "Tuning the rest of default configs..."
     sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' $MAIN_DEFCONFIG
     sed -i 's/CONFIG_HZ_300=y/CONFIG_HZ_250=y/' $MAIN_DEFCONFIG
     echo "CONFIG_POSIX_MQUEUE=y" >> $MAIN_DEFCONFIG
