@@ -75,6 +75,10 @@ setup_environment() {
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
+    # Simple GPU Algorithm exports
+    export SIMPLEGPU_PATCH1="https://github.com/ximi-mojito-test/mojito_krenol/commit/466da67f1ee6a567c9bd60282123a07fc9ac75b5.patch"
+    export SIMPLEGPU_PATCH2="https://github.com/ximi-mojito-test/mojito_krenol/commit/f87bd5e18caba7dd0ba0b5c9147d59bb21ff606f.patch"
+    export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
 }
 
 # Setup toolchain function
