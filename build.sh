@@ -130,7 +130,7 @@ add_patches() {
     wget -qO- $SIMPLEGPU_PATCH1 | patch -s -p1
     wget -qO- $SIMPLEGPU_PATCH2 | patch -s -p1
     wget -qO- $SIMPLEGPU_PATCH3 | patch -s -p1
-    echo "CONFIG_SIMPLE_GPU_ALGORITHM=y"
+    echo "CONFIG_SIMPLE_GPU_ALGORITHM=y" >> $MAIN_DEFCONFIG
     # Apply general config patches
     echo "Tuning the rest of default configs..."
     sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' $MAIN_DEFCONFIG
