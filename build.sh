@@ -207,19 +207,34 @@ add_ksu() {
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
+        elif [[ "$KSU_SETUP_URI" == *"sidex15/KernelSU-Next"* ]]; then
+            # Apply manual hook
+            wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
+            # Clone xx's repository
+            git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
+            # Manual symlink creation
+            cd drivers
+            ln -sfv ../KernelSU/kernel kernelsu
+            cd ..
+            # Manual Makefile and Kconfig Editing
+            sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
+            sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
+            # Manual Config Enablement
+            echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
+            echo "KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
             # Apply susfs patches
-            # wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
+            wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
             # Enable susfs configs
-            # echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> $MAIN_DEFCONFIG
-            # echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SUS_PATH=n" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=n" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> $MAIN_DEFCONFIG
+            echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
