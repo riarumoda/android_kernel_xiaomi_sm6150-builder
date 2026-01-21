@@ -16,7 +16,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [lineage-22-noksu, lineage-23-noksu, lineage-22-ksu, lineage-23-ksu]
+        build-type: [lineage-22-noksu, lineage-23-noksu, lineage-22-blxx, lineage-23-blxx, lineage-22-susfs, lineage-23-susfs]
 
     steps:
       - uses: actions/checkout@v6
@@ -46,9 +46,13 @@ jobs:
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
           fi
           cp build.sh android_kernel_xiaomi_sm6150/
@@ -62,10 +66,14 @@ jobs:
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=F2FS_TBYOOL
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=F2FS_TBYOOL
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
           fi
           cd ..
 
@@ -82,9 +90,13 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
 
@@ -104,9 +116,13 @@ jobs:
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-22.2
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.0
           fi
           cp build.sh android_kernel_xiaomi_sm6150/
@@ -120,10 +136,14 @@ jobs:
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=NONE
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=NONE
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=NONE
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
           fi
           cd ..
 
@@ -140,9 +160,13 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
           elif [[ "${{ matrix.build-type }}" == "lineage-23-noksu" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-15/' AnyKernel3/anykernel.sh
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=16/' AnyKernel3/anykernel.sh
           fi
 
@@ -192,10 +216,13 @@ jobs:
           prerelease: false
           body: |
             > [!NOTE]
-            > This build have integration with backslashxx's KernelSU.   
-            > KernelSU latest manager can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
+            > This build have integration with backslashxx's KernelSU & KernelSU-NEXT.   
+            > KernelSU latest manager for backslashxx's KernelSU can be found in [here](https://github.com/backslashxx/KernelSU/releases).   
+            > KernelSU latest manager for KernelSU-NEXT can be found in [here](https://t.me/ksunext_ci). 
                
             > [!WARNING]
+            > KernelSU-NEXT variant includes SUSFS Version 2.0.0, meanwhile backslashxx's KernelSU does not include SUSFS.
+            > KernelSU-NEXT uses backslashxx's scope-minimized hook v1.6, meanwhile backslashxx's KernelSU used hookless syscall table method.
             > Use the F2FS Compression ZIP if your ROM is using F2FS Compression.   
             > Use LineageOS 23 builds if you are on Android 16, for Android 15 and lower please use LineageOS 22 builds.
 
@@ -204,6 +231,8 @@ jobs:
           files: |
             artifacts/lineage-22-noksu-zip/*.zip
             artifacts/lineage-23-noksu-zip/*.zip
-            artifacts/lineage-22-ksu-zip/*.zip
-            artifacts/lineage-23-ksu-zip/*.zip
+            artifacts/lineage-22-blxx-zip/*.zip
+            artifacts/lineage-23-blxx-zip/*.zip
+            artifacts/lineage-22-susfs-zip/*.zip
+            artifacts/lineage-23-susfs-zip/*.zip
           overwrite_files: true
