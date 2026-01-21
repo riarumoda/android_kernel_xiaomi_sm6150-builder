@@ -162,13 +162,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: kernel-sidex15-${{ needs.build.outputs.timestamp }}
+          tag_name: kernel-vbajs-${{ needs.build.outputs.timestamp }}
           name: KernelSU-Next - ${{ steps.ts.outputs.FANCYDATE }}
           draft: false
           prerelease: true
           body: |
             > [!NOTE]
-            > This build have integration with sidex15's KernelSU-Next.   
+            > This build have integration with vb's KernelSU-Next.   
             > KernelSU latest manager can be found in [here](https://t.me/ksunext_ci).   
                
             > [!WARNING]
