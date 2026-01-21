@@ -189,8 +189,9 @@ add_ksu() {
         wget -qO- $SILLY_KPATCH_NEXT_PATCH | patch -s -p1
         if [[ "$KSU_SETUP_URI" == *"backslashxx/KernelSU"* ]]; then
             # Apply manual hook
-            wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-            # Clone xx's repository
+            # disable for now, we're gonna use hookless mode
+            # wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
+            # Clone repository
             git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
             # Manual symlink creation
             cd drivers
@@ -205,7 +206,7 @@ add_ksu() {
         elif [[ "$KSU_SETUP_URI" == *"vbajs/KernelSU-Next"* ]]; then
             # Apply manual hook
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-            # Clone xx's repository
+            # Clone repository
             git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
             # Manual symlink creation
             cd drivers
