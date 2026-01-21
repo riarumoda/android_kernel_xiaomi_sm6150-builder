@@ -1,4 +1,4 @@
-name: Weekly builds for sidex15
+name: Staging (vb's KSU)
 
 on:
   workflow_dispatch:
@@ -55,9 +55,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_SIDX --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
           elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_SIDX --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
           fi
           cd ..
 
@@ -101,9 +101,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "lineage-22-ksu" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_SIDX --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "lineage-23-ksu" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_SIDX --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
           fi
           cd ..
 

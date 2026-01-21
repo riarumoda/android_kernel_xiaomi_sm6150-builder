@@ -44,7 +44,7 @@ setup_environment() {
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
     else
-        echo "Invalid KernelSU selector. Use --ksu=KSU_BLXX, or --ksu=NONE."
+        echo "Invalid KernelSU selector. Use --ksu=KSU_BLXX, --ksu=KSU_VBAJ, or --ksu=NONE."
         exit 1
     fi
     # DTBO Exports
@@ -202,7 +202,7 @@ add_ksu() {
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
-        elif [[ "$KSU_SETUP_URI" == *"sidex15/KernelSU-Next"* ]]; then
+        elif [[ "$KSU_SETUP_URI" == *"vbajs/KernelSU-Next"* ]]; then
             # Apply manual hook
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
             # Clone xx's repository
