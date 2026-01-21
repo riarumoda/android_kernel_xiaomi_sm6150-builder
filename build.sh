@@ -38,7 +38,7 @@ setup_environment() {
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_VBAJ" ]]; then
         export KSU_SETUP_URI="https://github.com/vbajs/KernelSU-Next"
         export KSU_BRANCH="legacy"
-        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/36105f0599f679bc76e2866de397d50a83339849.patch"
+        export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
         export KSU_SETUP_URI=""
         export KSU_BRANCH=""
