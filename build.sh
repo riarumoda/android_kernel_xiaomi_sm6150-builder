@@ -65,8 +65,10 @@ setup_environment() {
     # F2FS Exports
     if [[ "$F2FS_SELECTOR" == "--f2fs=F2FS_TBYOOL" ]]; then
         export F2FS_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch"
+        export F2FS_FAKE_UNAME_PATCH="https://github.com/FlopKernel-Series/flop_trinket-mi_kernel/commit/1f6f70bb5a62a136b46d6d4c801b485345c94d6c.patch"
     elif [[ "$F2FS_SELECTOR" == "--f2fs=NONE" ]]; then
         export F2FS_PATCH=""
+        export F2FS_FAKE_UNAME_PATCH=""
     else
         echo "Invalid F2FS selector. Use --f2fs=F2FS_TBYOOL or --f2fs=NONE."
         exit 1
@@ -168,9 +170,12 @@ add_f2fs() {
     if [ -n "$F2FS_PATCH" ]; then
         echo "Applying F2FS patch..."
         wget -qO- $F2FS_PATCH | patch -s -p1
+        echo "Applying f2fs fake uname patch..."
+        wget -qO- $F2FS_FAKE_UNAME_PATCH | patch -s -p1
         # Manual Config Enablement
         echo "CONFIG_F2FS_FS_COMPRESSION=y" >> $MAIN_DEFCONFIG
         echo "CONFIG_F2FS_FS_LZ4=y" >> $MAIN_DEFCONFIG
+        echo "CONFIG_F2FS_REPORT_FAKE_KERNEL_VERSION=y" >> $MAIN_DEFCONFIG
     else
         echo "No F2FS patch to apply."
     fi
