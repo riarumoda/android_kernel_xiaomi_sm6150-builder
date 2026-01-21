@@ -11,8 +11,9 @@ This kernel follows weekly builds of [devices/sweet/builds](https://download.lin
 Compatible with official LineageOS builds for Redmi Note 10 Pro, but since this kernel strictly follows [LineageOS/android_kernel_xiaomi_sm6150](https://github.com/LineageOS/android_kernel_xiaomi_sm6150), the compatibility may vary between each releases. Always make sure you have a kernel backup before proceeding. This kernel might gonna work on non-lineage based roms but it is not guaranteed.
 
 # Credits
-[TBYOOL](https://github.com/tbyool) for the buildscripts and kernel patches.   
+[TBYOOL](https://github.com/tbyool) for the buildscripts, kernel patches, and KernelSU-NEXT forks.   
 [xiaomi-sm6150](https://github.com/xiaomi-sm6150) for the dtbo patches.  
 [PixelOS-Devices-old](https://github.com/PixelOS-Devices-old) for the ln8000 patches.   
 [backslashxx](https://github.com/backslashxx) for KernelSU & KernelSU scope-minimized manual hooks.   
 [TheSillyOk](https://github.com/TheSillyOk) for kpatch fixup patches.    
+[JackA1ltman](https://github.com/JackA1ltman) for SUSFS patches.
