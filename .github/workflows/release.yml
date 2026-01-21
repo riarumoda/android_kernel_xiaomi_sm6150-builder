@@ -70,9 +70,9 @@ jobs:
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL
           elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
           fi
           cd ..
@@ -140,9 +140,9 @@ jobs:
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=NONE
-          elif [[ "${{ matrix.build-type }}" == "lineage-22-blxx" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-22-susfs" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
-          elif [[ "${{ matrix.build-type }}" == "lineage-23-blxx" ]]; then
+          elif [[ "${{ matrix.build-type }}" == "lineage-23-susfs" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
           fi
           cd ..
