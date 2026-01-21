@@ -1,4 +1,4 @@
-name: Weekly builds
+name: Weekly builds for sidex15
 
 on:
   workflow_dispatch:
