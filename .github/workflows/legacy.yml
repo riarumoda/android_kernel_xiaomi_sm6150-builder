@@ -50,10 +50,10 @@ jobs:
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
-          ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=NONE
+          ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL
           cd ..
 
-      - name: Preparing AnyKernel3 (${{ matrix.build-type }}, F2FS)
+      - name: Preparing AnyKernel3 (${{ matrix.build-type }})
         run: |
           if [ -d "$PWD/AnyKernel3" ]; then
             rm -rf AnyKernel3
