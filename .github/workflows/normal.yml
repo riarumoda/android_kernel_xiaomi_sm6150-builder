@@ -122,7 +122,7 @@ jobs:
           prerelease: false
           body: |
             > [!NOTE]   
-            > - The current builds support Android 11~16, meanwhile legacy builds support Android 11~14.
+            > - The current builds support Android 11 to 16, meanwhile legacy builds support Android 11 to 14.
             > - This build have KernelSU integration with backslashxx's KernelSU.   
             > - KernelSU latest manager for backslashxx's KernelSU can be found in [here](https://github.com/backslashxx/KernelSU/releases) or in [here](https://t.me/kowsu_build).    
                
