@@ -146,8 +146,6 @@ add_patches() {
     echo "Tuning the rest of default configs..."
     sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' $MAIN_DEFCONFIG
     sed -i 's/CONFIG_HZ_300=y/CONFIG_HZ_250=y/' $MAIN_DEFCONFIG
-    # sed -i 's/CONFIG_CC_STACKPROTECTOR_STRONG=y/# CONFIG_CC_STACKPROTECTOR_STRONG is not set/' $MAIN_DEFCONFIG
-    # echo "CONFIG_CC_STACKPROTECTOR=n" >> $MAIN_DEFCONFIG
     echo "CONFIG_POSIX_MQUEUE=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_SYSVIPC=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_CGROUP_DEVICE=y" >> $MAIN_DEFCONFIG
@@ -165,7 +163,7 @@ add_patches() {
     # Apply kernel rename to defconfig
     sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' $MAIN_DEFCONFIG
     # Apply O3 flags into Kernel Makefile
-    sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -mtune=cortex-a76 -march=armv8.2-a+crc+crypto+lse+rdm -O3 -funroll-loops/g' Makefile
+    sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
     sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
 }
 
