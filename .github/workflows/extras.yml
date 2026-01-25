@@ -171,6 +171,7 @@ jobs:
             > - The current builds support Android 11 to 16, meanwhile legacy builds support Android 11 to 14.
             > - This build have KernelSU integration with KernelSU-NEXT + SUSFS 2.0.0.   
             > - KernelSU latest manager for KernelSU-NEXT can be found in [here](https://t.me/ksunext_ci).     
+            > - Pick the nothing build if you don't want KernelSU built-in into the kernel.
                
             > [!CAUTION]   
             > - Legacy builds doesn't have F2FS Compression Integration, which is usually important on ROMs like [PixelOS](https://pixelos.net/download/sweet).   
