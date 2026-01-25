@@ -127,7 +127,7 @@ jobs:
             > - KernelSU latest manager for backslashxx's KernelSU can be found in [here](https://github.com/backslashxx/KernelSU/releases) or in [here](https://t.me/kowsu_build).    
                
             > [!CAUTION]   
-            > - Legacy builds doesn't have F2FS Compression Integration, which is usually used on ROMs like [PixelOS](https://pixelos.net/download/sweet).   
+            > - Legacy builds doesn't have F2FS Compression Integration, which is usually important on ROMs like [PixelOS](https://pixelos.net/download/sweet).   
             > - Always backup your boot & dtbo image first before proceeding!   
           files: |
             artifacts/legacy/*.zip
