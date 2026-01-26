@@ -54,13 +54,13 @@ setup_environment() {
     export DTBO_PATCH4="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/fade7df36b01f2b170c78c63eb8fe0d11c613c4a.patch"
     export DTBO_PATCH5="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/2628183db0d96be8dae38a21f2b09cb10978f423.patch"
     export DTBO_PATCH6="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/31f4577af3f8255ae503a5b30d8f68906edde85f.patch"
-    # LN8K Exports
-    export LN8K_PATCH1="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/e64a07f8d8beea4d7470e9ad4ef1b712d15909b5.patch"
-    export LN8K_PATCH2="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/39af7bb35ee22c2e6accde8c413151eda6b985d8.patch"
-    export LN8K_PATCH3="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/53133f4d9620f27d3d8fe3e021165cc93036cfb7.patch"
-    export LN8K_PATCH4="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/b8a6b2aefce81a1f6f51b9a46113ace0624aebdd.patch"
-    export LN8K_PATCH5="https://github.com/PixelOS-Devices-old/kernel_xiaomi_sm6150/commit/9d0cf7fd14477f290d7eeb8cb0107f29816935c0.patch"
-    export LN8K_PATCH6="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/cc9b85b360968d0f55359b4dd8d2dffd3912a05d.patch"
+    # Main LN8K Exports
+    export LN8K_PATCH1="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/7b73f853977d2c016e30319dffb1f49957d30b40.patch"
+    export LN8K_PATCH2="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/63dddc108d57dc43e1cd0da0f1445875f760cf97.patch"
+    export LN8K_PATCH3="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/95816dff2ecc7ddd907a56537946b5cf1e864953.patch"
+    export LN8K_PATCH4="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/330c60abc13530bd05287f9e5395d283ebfd6d0b.patch"
+    export LN8K_PATCH5="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/0477c7006b41a1763b3314af9eb300491b91fc25.patch"
+    # Sub LN8K Exports
     export LN8K_PATCH7="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/aa5ddad5be03aa7436e7ce6e84d46b280849acae.patch"
     export LN8K_PATCH8="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/857638b0da6f80830122b8d1b45c7842970e76c3.patch"
     export LN8K_PATCH9="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/3a68adff14cbedd09ce2a735d575c3bf92dd696f.patch"
