@@ -55,9 +55,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_VBAJ --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
           fi
           cd ..
 
