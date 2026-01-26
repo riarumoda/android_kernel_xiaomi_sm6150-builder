@@ -35,8 +35,8 @@ setup_environment() {
         export KSU_SETUP_URI="https://github.com/backslashxx/KernelSU"
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
-    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_VBAJ" ]]; then
-        export KSU_SETUP_URI="https://raw.githubusercontent.com/vbajs/KernelSU-Next/next/kernel/setup.sh"
+    elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_NEXT" ]]; then
+        export KSU_SETUP_URI="https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh"
         export KSU_BRANCH="legacy"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
@@ -44,7 +44,7 @@ setup_environment() {
         export KSU_BRANCH=""
         export KSU_GENERAL_PATCH=""
     else
-        echo "Invalid KernelSU selector. Use --ksu=KSU_BLXX, --ksu=KSU_VBAJ, or --ksu=NONE."
+        echo "Invalid KernelSU selector. Use --ksu=KSU_BLXX, --ksu=KSU_NEXT, or --ksu=NONE."
         exit 1
     fi
     # DTBO Exports
@@ -85,6 +85,8 @@ setup_environment() {
     export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
     # JackA1ltman SUSFS export
     export JACK_SUSFS_PATCH="https://github.com/JackA1ltman/NonGKI_Kernel_Build_2nd/raw/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.14.patch"
+    # vbajs KSu SUSFS Export
+    export VB_KSU_SUSFS_PATCH="https://github.com/vbajs/KernelSU-Next/commit/d2befa1c56c53e11e3f22cbce06f506a7394140f.patch"
 }
 
 # Setup toolchain function
@@ -197,7 +199,7 @@ add_ksu() {
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_TAMPER_SYSCALL_TABLE=y" >> $MAIN_DEFCONFIG
-        elif [[ "$KSU_SETUP_URI" == *"vbajs/KernelSU-Next"* ]]; then
+        elif [[ "$KSU_SETUP_URI" == *"KernelSU-Next/KernelSU-Next"* ]]; then
             # Apply manual hook
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
             # Run Setup Script
@@ -206,7 +208,17 @@ add_ksu() {
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
             # Apply susfs patches
+            echo "Applying SUSFS patches..."
             wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
+            # Apply ksu susfs patches
+            cd KernelSU
+            wget -qO- $VB_KSU_SUSFS_PATCH | patch -s -p1
+            git config user.email $GIT_EMAIL
+            git config user.name $GIT_NAME
+            git config set advice.addEmbeddedRepo true
+            git add .
+            git commit -m "cleanup: applied patches before build" &> /dev/null
+            cd ..
             # Enable susfs configs
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> $MAIN_DEFCONFIG
