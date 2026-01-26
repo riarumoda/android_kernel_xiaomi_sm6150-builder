@@ -211,7 +211,7 @@ add_ksu() {
             echo "Applying SUSFS patches..."
             wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
             # Apply ksu susfs patches
-            cd KernelSU
+            cd KernelSU-Next
             wget -qO- $VB_KSU_SUSFS_PATCH | patch -s -p1
             git config user.email $GIT_EMAIL
             git config user.name $GIT_NAME
