@@ -212,6 +212,7 @@ add_ksu() {
             wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
             # Apply ksu susfs patches
             cd KernelSU-Next
+            git revert -n 8002f62
             wget -qO- $VB_KSU_SUSFS_PATCH | patch -s -p1
             git config user.email $GIT_EMAIL
             git config user.name $GIT_NAME
