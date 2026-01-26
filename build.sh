@@ -36,7 +36,7 @@ setup_environment() {
         export KSU_BRANCH="master"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_VBAJ" ]]; then
-        export KSU_SETUP_URI="https://github.com/vbajs/KernelSU-Next"
+        export KSU_SETUP_URI="https://raw.githubusercontent.com/vbajs/KernelSU-Next/next/kernel/setup.sh"
         export KSU_BRANCH="legacy"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
@@ -200,15 +200,8 @@ add_ksu() {
         elif [[ "$KSU_SETUP_URI" == *"vbajs/KernelSU-Next"* ]]; then
             # Apply manual hook
             wget -qO- $KSU_GENERAL_PATCH | patch -s -p1
-            # Clone repository
-            git clone $KSU_SETUP_URI --branch $KSU_BRANCH KernelSU &> /dev/null
-            # Manual symlink creation
-            cd drivers
-            ln -sfv ../KernelSU/kernel kernelsu
-            cd ..
-            # Manual Makefile and Kconfig Editing
-            sed -i '$a \\nobj-$(CONFIG_KSU) += kernelsu/' drivers/Makefile
-            sed -i '/endmenu/i source "drivers/kernelsu/Kconfig"\n' drivers/Kconfig
+            # Run Setup Script
+            curl -LSs $KSU_SETUP_URI | bash -s $KSU_BRANCH
             # Manual Config Enablement
             echo "CONFIG_KSU=y" >> $MAIN_DEFCONFIG
             echo "KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
