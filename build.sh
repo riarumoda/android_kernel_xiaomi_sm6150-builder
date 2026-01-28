@@ -145,16 +145,6 @@ add_patches() {
     wget -qO- $SIMPLEGPU_PATCH2 | patch -s -p1
     wget -qO- $SIMPLEGPU_PATCH3 | patch -s -p1
     echo "CONFIG_SIMPLE_GPU_ALGORITHM=y" >> $MAIN_DEFCONFIG
-    # Apply NetHunter Patches
-    echo "Applying NetHunter patches..."
-    wget -qO- $NETHUNTER_PATCH1 | patch -s -p1
-    wget -qO- $NETHUNTER_PATCH2 | patch -s -p1
-    wget -qO- $NETHUNTER_PATCH3 | patch -s -p1
-    git fetch $NETHUNTER_REPO $NETHUNTER_BRANCH &> /dev/null
-    git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD &> /dev/null
-    git read-tree --prefix=nethunter -u FETCH_HEAD
-    git commit -m "Imported nethunter/ from https://github.com/cyberknight777/android_kernel_nethunter"
-    sed -i '/endmenu/i source "nethunter/Kconfig"\n' arch/arm64/Kconfig
     # Apply general config patches
     echo "Tuning the rest of default configs..."
     sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' $MAIN_DEFCONFIG
@@ -263,6 +253,15 @@ compile_kernel() {
     git config user.email $GIT_EMAIL
     git config user.name $GIT_NAME
     git config set advice.addEmbeddedRepo true
+    # Apply NetHunter Patches
+    echo "Applying NetHunter patches..."
+    wget -qO- $NETHUNTER_PATCH1 | patch -s -p1
+    wget -qO- $NETHUNTER_PATCH2 | patch -s -p1
+    wget -qO- $NETHUNTER_PATCH3 | patch -s -p1
+    git fetch $NETHUNTER_REPO $NETHUNTER_BRANCH &> /dev/null
+    git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD &> /dev/null
+    git read-tree --prefix=nethunter -u FETCH_HEAD
+    sed -i '/endmenu/i source "nethunter/Kconfig"\n' arch/arm64/Kconfig
     git add .
     git commit -m "cleanup: applied patches before build" &> /dev/null
     # Start compilation
