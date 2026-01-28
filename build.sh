@@ -11,6 +11,7 @@ setup_environment() {
     local MAIN_DEFCONFIG_IMPORT="$1"
     local SUBS_DEFCONFIG_IMPORT="$2"
     local KERNELSU_SELECTOR="$3"
+    local LN8K_SELECTOR="$4"
     # Maintainer info
     export KBUILD_BUILD_USER=riaru
     export KBUILD_BUILD_HOST=ximiedits
@@ -53,18 +54,37 @@ setup_environment() {
     export DTBO_PATCH4="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/fade7df36b01f2b170c78c63eb8fe0d11c613c4a.patch"
     export DTBO_PATCH5="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/2628183db0d96be8dae38a21f2b09cb10978f423.patch"
     export DTBO_PATCH6="https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/31f4577af3f8255ae503a5b30d8f68906edde85f.patch"
-    # Main LN8K Exports
-    export LN8K_PATCH1="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/7b73f853977d2c016e30319dffb1f49957d30b40.patch"
-    export LN8K_PATCH2="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/63dddc108d57dc43e1cd0da0f1445875f760cf97.patch"
-    export LN8K_PATCH3="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/95816dff2ecc7ddd907a56537946b5cf1e864953.patch"
-    export LN8K_PATCH4="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/330c60abc13530bd05287f9e5395d283ebfd6d0b.patch"
-    export LN8K_PATCH5="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/0477c7006b41a1763b3314af9eb300491b91fc25.patch"
-    # Sub LN8K Exports
-    export LN8K_PATCH6="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/aa5ddad5be03aa7436e7ce6e84d46b280849acae.patch"
-    export LN8K_PATCH7="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/857638b0da6f80830122b8d1b45c7842970e76c3.patch"
-    export LN8K_PATCH8="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/3a68adff14cbedd09ce2a735d575c3bf92dd696f.patch"
-    export LN8K_PATCH9="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/30fcc15d5dcf2cfc3b83a5a7d4a77e2880639fa5.patch"
-    export LN8K_PATCH10="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/1a17a6fbbf59d901c4b3aec66c06a1c96cd89c7e.patch"
+    # LN8K Settings
+    if [[ "$LN8K_SELECTOR" == "--ln8k=TRUE" ]]; then
+        # Main LN8K Exports
+        export LN8K_PATCH1="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/7b73f853977d2c016e30319dffb1f49957d30b40.patch"
+        export LN8K_PATCH2="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/63dddc108d57dc43e1cd0da0f1445875f760cf97.patch"
+        export LN8K_PATCH3="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/95816dff2ecc7ddd907a56537946b5cf1e864953.patch"
+        export LN8K_PATCH4="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/330c60abc13530bd05287f9e5395d283ebfd6d0b.patch"
+        export LN8K_PATCH5="https://github.com/crdroidandroid/android_kernel_xiaomi_sm6150/commit/0477c7006b41a1763b3314af9eb300491b91fc25.patch"
+        # Sub LN8K Exports
+        export LN8K_PATCH6="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/aa5ddad5be03aa7436e7ce6e84d46b280849acae.patch"
+        export LN8K_PATCH7="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/857638b0da6f80830122b8d1b45c7842970e76c3.patch"
+        export LN8K_PATCH8="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/3a68adff14cbedd09ce2a735d575c3bf92dd696f.patch"
+        export LN8K_PATCH9="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/30fcc15d5dcf2cfc3b83a5a7d4a77e2880639fa5.patch"
+        export LN8K_PATCH10="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/1a17a6fbbf59d901c4b3aec66c06a1c96cd89c7e.patch"
+    elif [[ "$LN8K_SELECTOR" == "--ln8k=FALSE" ]]; then
+        # Main LN8K Exports
+        export LN8K_PATCH1=""
+        export LN8K_PATCH2=""
+        export LN8K_PATCH3=""
+        export LN8K_PATCH4=""
+        export LN8K_PATCH5=""
+        # Sub LN8K Exports
+        export LN8K_PATCH6=""
+        export LN8K_PATCH7=""
+        export LN8K_PATCH8=""
+        export LN8K_PATCH9=""
+        export LN8K_PATCH10=""
+    else
+        echo "Invalid LN8K selector. Use --ln8k=TRUE or --ln8k=FALSE."
+        exit 1
+    fi
     # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     # KernelSU umount patch
@@ -109,19 +129,6 @@ add_patches() {
     wget -qO- $DTBO_PATCH4 | patch -s -p1
     wget -qO- $DTBO_PATCH5 | patch -s -p1
     wget -qO- $DTBO_PATCH6 | patch -s -p1
-    # Apply LN8K patches
-    echo "Applying LN8K patches..."
-    wget -qO- $LN8K_PATCH1 | patch -s -p1
-    wget -qO- $LN8K_PATCH2 | patch -s -p1
-    wget -qO- $LN8K_PATCH3 | patch -s -p1
-    wget -qO- $LN8K_PATCH4 | patch -s -p1
-    wget -qO- $LN8K_PATCH5 | patch -s -p1
-    wget -qO- $LN8K_PATCH6 | patch -s -p1
-    wget -qO- $LN8K_PATCH7 | patch -s -p1
-    wget -qO- $LN8K_PATCH8 | patch -s -p1
-    wget -qO- $LN8K_PATCH9 | patch -s -p1
-    wget -qO- $LN8K_PATCH10 | patch -s -p1
-    echo "CONFIG_CHARGER_LN8000=y" >> $MAIN_DEFCONFIG
     # Apply Simple GPU Algorithm patches
     echo "Applying Simple GPU Algorithm patches..."
     wget -qO- $SIMPLEGPU_PATCH1 | patch -s -p1
@@ -151,6 +158,26 @@ add_patches() {
     # Apply O3 flags into Kernel Makefile
     sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
     sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
+}
+
+add_ln8k() {
+    if [[ "$LN8K_SELECTOR" == "--ln8k=TRUE" ]]; then
+        # Apply LN8K patches
+        echo "Applying LN8K patches..."
+        wget -qO- $LN8K_PATCH1 | patch -s -p1
+        wget -qO- $LN8K_PATCH2 | patch -s -p1
+        wget -qO- $LN8K_PATCH3 | patch -s -p1
+        wget -qO- $LN8K_PATCH4 | patch -s -p1
+        wget -qO- $LN8K_PATCH5 | patch -s -p1
+        wget -qO- $LN8K_PATCH6 | patch -s -p1
+        wget -qO- $LN8K_PATCH7 | patch -s -p1
+        wget -qO- $LN8K_PATCH8 | patch -s -p1
+        wget -qO- $LN8K_PATCH9 | patch -s -p1
+        wget -qO- $LN8K_PATCH10 | patch -s -p1
+        echo "CONFIG_CHARGER_LN8000=y" >> $MAIN_DEFCONFIG
+    else
+        echo "No LN8K patches to apply."
+    fi
 }
 
 # Add KernelSU function
@@ -250,7 +277,7 @@ main() {
     echo "Validating input arguments..."
     if [ $# -ne 4 ]; then
         echo "Usage: $0 <MAIN_DEFCONFIG_IMPORT> <SUBS_DEFCONFIG_IMPORT> <KERNELSU_SELECTOR>"
-        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX"
+        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE"
         exit 1
     fi
     if [ ! -f "arch/arm64/configs/vendor/$1" ]; then
@@ -264,6 +291,7 @@ main() {
     setup_environment "$1" "$2" "$3" "$4"
     setup_toolchain
     add_patches
+    add_ln8k
     add_ksu
     compile_kernel
 }
