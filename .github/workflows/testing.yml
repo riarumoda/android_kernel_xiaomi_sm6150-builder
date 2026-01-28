@@ -1,4 +1,4 @@
-name: Normal KSU
+name: Testing
 
 on:
   workflow_dispatch:
