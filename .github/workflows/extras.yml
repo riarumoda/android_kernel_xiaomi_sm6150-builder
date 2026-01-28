@@ -55,9 +55,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
           fi
           cd ..
 
@@ -101,9 +101,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=NONE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --f2fs=F2FS_TBYOOL
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=NONE --ln8k=TRUE
           fi
           cd ..
 
@@ -174,7 +174,6 @@ jobs:
             > - Pick the nothing build if you don't want KernelSU built-in into the kernel.
                
             > [!CAUTION]   
-            > - Legacy builds doesn't have F2FS Compression Integration, which is usually important on ROMs like [PixelOS](https://pixelos.net/download/sweet).   
             > - Always backup your boot & dtbo image first before proceeding!   
           files: |
             artifacts/legacy/*.zip
