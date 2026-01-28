@@ -161,7 +161,7 @@ add_patches() {
 }
 
 add_ln8k() {
-    if [[ "$LN8K_SELECTOR" == "--ln8k=TRUE" ]]; then
+    if [ -n "$LN8K_PATCH1" ]; then
         # Apply LN8K patches
         echo "Applying LN8K patches..."
         wget -qO- $LN8K_PATCH1 | patch -s -p1
