@@ -87,6 +87,13 @@ setup_environment() {
     export JACK_SUSFS_PATCH="https://github.com/JackA1ltman/NonGKI_Kernel_Build_2nd/raw/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.14.patch"
     # vbajs KSu SUSFS Export
     export VB_KSU_SUSFS_PATCH="https://github.com/vbajs/KernelSU-Next/commit/d2befa1c56c53e11e3f22cbce06f506a7394140f.patch"
+    # NetHunter Exports
+    export NETHUNTER_PATCH1="https://github.com/KoraiLabs/davinci-nethunter/commit/3d404ab4ef8cebfac7235cc2d5d2fedbc333194e.patch"
+    export NETHUNTER_PATCH2="https://github.com/KoraiLabs/davinci-nethunter/commit/49ab516ea6eaa4b11f877daf7ea7b4010be1a11b.patch"
+    export NETHUNTER_PATCH3="https://github.com/KoraiLabs/davinci-nethunter/commit/f799b4d96d8e3c7d3b56ed3699d2017bbe39456e.patch"
+    # cyberknight777 Nethunter Settings
+    export NETHUNTER_REPO="https://github.com/cyberknight777/android_kernel_nethunter"
+    export NETHUNTER_BRANCH="main"
 }
 
 # Setup toolchain function
@@ -138,6 +145,16 @@ add_patches() {
     wget -qO- $SIMPLEGPU_PATCH2 | patch -s -p1
     wget -qO- $SIMPLEGPU_PATCH3 | patch -s -p1
     echo "CONFIG_SIMPLE_GPU_ALGORITHM=y" >> $MAIN_DEFCONFIG
+    # Apply NetHunter Patches
+    echo "Applying NetHunter patches..."
+    wget -qO- $NETHUNTER_PATCH1 | patch -s -p1
+    wget -qO- $NETHUNTER_PATCH2 | patch -s -p1
+    wget -qO- $NETHUNTER_PATCH3 | patch -s -p1
+    git fetch $NETHUNTER_REPO $NETHUNTER_BRANCH &> /dev/null
+    git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD &> /dev/null
+    git read-tree --prefix=nethunter -u FETCH_HEAD
+    git commit -m "Imported nethunter/ from https://github.com/cyberknight777/android_kernel_nethunter"
+    sed -i '/endmenu/i source "nethunter/Kconfig"\n' arch/arm64/Kconfig
     # Apply general config patches
     echo "Tuning the rest of default configs..."
     sed -i 's/# CONFIG_PID_NS is not set/CONFIG_PID_NS=y/' $MAIN_DEFCONFIG
