@@ -11,7 +11,6 @@ setup_environment() {
     local MAIN_DEFCONFIG_IMPORT="$1"
     local SUBS_DEFCONFIG_IMPORT="$2"
     local KERNELSU_SELECTOR="$3"
-    local F2FS_SELECTOR="$4"
     # Maintainer info
     export KBUILD_BUILD_USER=riaru
     export KBUILD_BUILD_HOST=ximiedits
@@ -66,15 +65,6 @@ setup_environment() {
     export LN8K_PATCH8="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/3a68adff14cbedd09ce2a735d575c3bf92dd696f.patch"
     export LN8K_PATCH9="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/30fcc15d5dcf2cfc3b83a5a7d4a77e2880639fa5.patch"
     export LN8K_PATCH10="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/1a17a6fbbf59d901c4b3aec66c06a1c96cd89c7e.patch"
-    # F2FS Exports
-    if [[ "$F2FS_SELECTOR" == "--f2fs=F2FS_TBYOOL" ]]; then
-        export F2FS_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch"
-    elif [[ "$F2FS_SELECTOR" == "--f2fs=NONE" ]]; then
-        export F2FS_PATCH=""
-    else
-        echo "Invalid F2FS selector. Use --f2fs=F2FS_TBYOOL or --f2fs=NONE."
-        exit 1
-    fi
     # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     # KernelSU umount patch
@@ -85,7 +75,7 @@ setup_environment() {
     export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
     # JackA1ltman SUSFS export
     export JACK_SUSFS_PATCH="https://github.com/JackA1ltman/NonGKI_Kernel_Build_2nd/raw/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.14.patch"
-    # vbajs KSu SUSFS Export
+    # vbajs KSU SUSFS Export
     export VB_KSU_SUSFS_PATCH="https://github.com/vbajs/KernelSU-Next/commit/d2befa1c56c53e11e3f22cbce06f506a7394140f.patch"
 }
 
@@ -161,19 +151,6 @@ add_patches() {
     # Apply O3 flags into Kernel Makefile
     sed -i 's/KBUILD_CFLAGS\s\++= -O2/KBUILD_CFLAGS   += -O3/g' Makefile
     sed -i 's/LDFLAGS\s\++= -O2/LDFLAGS += -O3/g' Makefile
-}
-
-# Add F2FS patch function
-add_f2fs() {
-    if [ -n "$F2FS_PATCH" ]; then
-        echo "Applying F2FS patch..."
-        wget -qO- $F2FS_PATCH | patch -s -p1
-        # Manual Config Enablement
-        echo "CONFIG_F2FS_FS_COMPRESSION=y" >> $MAIN_DEFCONFIG
-        echo "CONFIG_F2FS_FS_LZ4=y" >> $MAIN_DEFCONFIG
-    else
-        echo "No F2FS patch to apply."
-    fi
 }
 
 # Add KernelSU function
@@ -272,8 +249,8 @@ main() {
     # Check if all four arguments are valid
     echo "Validating input arguments..."
     if [ $# -ne 4 ]; then
-        echo "Usage: $0 <MAIN_DEFCONFIG_IMPORT> <SUBS_DEFCONFIG_IMPORT> <KERNELSU_SELECTOR> <F2FS_SELECTOR>"
-        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --f2fs=F2FS_TBYOOL"
+        echo "Usage: $0 <MAIN_DEFCONFIG_IMPORT> <SUBS_DEFCONFIG_IMPORT> <KERNELSU_SELECTOR>"
+        echo "Example: $0 sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX"
         exit 1
     fi
     if [ ! -f "arch/arm64/configs/vendor/$1" ]; then
@@ -287,7 +264,6 @@ main() {
     setup_environment "$1" "$2" "$3" "$4"
     setup_toolchain
     add_patches
-    add_f2fs
     add_ksu
     compile_kernel
 }
