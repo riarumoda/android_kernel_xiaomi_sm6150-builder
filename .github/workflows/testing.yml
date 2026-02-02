@@ -56,17 +56,6 @@ jobs:
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/baa9c49c1e728f6abb6f85ecde87a0af90a33e26.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f61829440d1748b33db46f7edde6874f854f3977.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d3fbc93e9ca57392bdf921a489af61d4fa095768.patch" | patch -p1
-          echo "ximi-drm imports"
-          echo "revert changes on phoenix drm"
-          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f3bb8f785be9086bbf8edbd2c8eca430ad85097e.patch" | patch -p1
-          echo "drop drm oss impl"
-          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/2fdc2141d910b75ef4c0423468d8edd42031da1c.patch" | patch -p1
-          echo "re-add early fingerprint wake-up optimization"
-          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/ca07f589f49c1a02cbc06426e1fffa62526dadc1.patch" | patch -p1
-          echo "put ximi drm impl"
-          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/94dd42b27d93031b759a804b2b6564a6f39805f6.patch" | patch -p1
-          echo "re-add idle state sysfs node"
-          wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/bb93d2e4ad2374acd048e7fd5d49b4e26d6b3f01.patch" | patch -p1
           cd ..
 
       - name: Compile the kernel
