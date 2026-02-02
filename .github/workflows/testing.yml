@@ -55,7 +55,7 @@ jobs:
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/baa9c49c1e728f6abb6f85ecde87a0af90a33e26.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f61829440d1748b33db46f7edde6874f854f3977.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d3fbc93e9ca57392bdf921a489af61d4fa095768.patch" | patch -p1
-          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d08b32d5c197225ce95a379a59e841dc7a94c630.patch" | patch -p1
+          wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/e9d1f4627fbaaa1387640fb655fb610505affa8a.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/31f210e35db2df2cf4ba3f17dfcab6544995f284.patch" | patch -p1
           cd ..
 
