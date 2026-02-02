@@ -58,8 +58,10 @@ jobs:
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d3fbc93e9ca57392bdf921a489af61d4fa095768.patch" | patch -p1
           echo "ximi-drm imports"
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f3bb8f785be9086bbf8edbd2c8eca430ad85097e.patch" | patch -p1
+          wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/bb93d2e4ad2374acd048e7fd5d49b4e26d6b3f01.patch" | patch -R -p1
           wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/8a9c218871395fe213883fd629cd7285d56e51e3.patch" | patch -p1
           wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/e9d1f4627fbaaa1387640fb655fb610505affa8a.patch" | patch -p1
+          wget -qO- "https://github.com/vbajs/perf_kernel_xiaomi_sm6150/commit/bb93d2e4ad2374acd048e7fd5d49b4e26d6b3f01.patch" | patch -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/31f210e35db2df2cf4ba3f17dfcab6544995f284.patch" | patch -p1
           cd ..
 
