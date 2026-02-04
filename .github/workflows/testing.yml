@@ -53,8 +53,12 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "CONFIG_SDCARD_FS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           echo "F2FS Compression support"
-          wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/212f6697ff90336cc993d163411775ec969deeb6.patch" | patch -R -p1
-          wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/694585a55caa3e1873c889ab3aa1c47d93144fad.patch" | patch -R -p1
+          if [[ "${{ matrix.build-type }}" == "current" ]]; then
+            echo "Apply revert patch for current"
+            wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/212f6697ff90336cc993d163411775ec969deeb6.patch" | patch -R -p1
+            wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/694585a55caa3e1873c889ab3aa1c47d93144fad.patch" | patch -R -p1
+          fi
+          echo "Apply the compression support"
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch" | patch -p1
           cd ..
 
