@@ -1,4 +1,4 @@
-name: Normal KSU
+name: Weekly (Normal)
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Extras SUSFS-KSU & No-KSU
+name: Weekly (Extras)
 
 on:
   workflow_dispatch:
