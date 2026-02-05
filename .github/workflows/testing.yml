@@ -43,9 +43,7 @@ jobs:
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 -b lineage-23.2
-            echo "reset repo hard"
-            git reset --hard 2cc94e5253bcfa34cdaccdd08939b4d56aacff71
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           fi
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
@@ -57,7 +55,6 @@ jobs:
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            wget -qO- "https://github.com/LineageOS/android_kernel_xiaomi_sm6150/commit/bd2566e8a8fb39327ae062c42e3a5800f333d8ff.patch" | patch -R -p1
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           fi
           cd ..
@@ -77,16 +74,9 @@ jobs:
             sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
           fi
 
-      - name: Pack kernel with AnyKernel3
-        run: |
-          ZIPNAME="perf-neon-sweet-testing-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}.zip"
-          cd AnyKernel3
-          zip -rq9 "../$ZIPNAME" ./*
-          cd ..
-
-      - name: Upload artifacts (All builds)
+      - name: Pack & upload artifacts (All builds)
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.build-type }}
+          name: perf-neon-sweet-testing-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
           path: |
-            *.zip
+            AnyKernel3/*
