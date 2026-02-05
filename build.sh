@@ -150,9 +150,6 @@ add_patches() {
     echo "CONFIG_FSCACHE_STATS=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_FSCACHE_HISTOGRAM=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_SECURITY_SELINUX_DEVELOP=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_FS_ENCRYPTION=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_EXT4_ENCRYPTION=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_EXT4_FS_ENCRYPTION=y" >> $MAIN_DEFCONFIG
     # Apply kernel rename to defconfig
     sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' $MAIN_DEFCONFIG
     # Apply O3 flags into Kernel Makefile
