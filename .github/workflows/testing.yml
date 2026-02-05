@@ -55,6 +55,7 @@ jobs:
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
+            wget -qO- "https://github.com/LineageOS/android_kernel_xiaomi_sm6150/commit/bd2566e8a8fb39327ae062c42e3a5800f333d8ff.patch" | patch -R -p1
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           fi
           cd ..
