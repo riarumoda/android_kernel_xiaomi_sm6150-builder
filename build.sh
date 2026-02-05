@@ -13,10 +13,10 @@ setup_environment() {
     local KERNELSU_SELECTOR="$3"
     local LN8K_SELECTOR="$4"
     # Maintainer info
-    export KBUILD_BUILD_USER=riaru
-    export KBUILD_BUILD_HOST=ximiedits
-    export GIT_NAME="riaru-compile"
-    export GIT_EMAIL="riaru-compile@riaru.com"
+    export KBUILD_BUILD_USER=riaru-compile
+    export KBUILD_BUILD_HOST=riaru.com
+    export GIT_NAME="$KBUILD_BUILD_USER"
+    export GIT_EMAIL="$KBUILD_BUILD_USER@$KBUILD_BUILD_HOST"
     # GCC and Clang settings
     export CLANG_REPO_URI="https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b.git"
     export GCC_64_REPO_URI="https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git"
