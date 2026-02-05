@@ -41,9 +41,11 @@ jobs:
             rm -rf android_kernel_xiaomi_sm6150
           fi
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 -b lineage-21
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 -b lineage-23.2
+            echo "reset repo hard to ce245ad"
+            git reset --hard ce245ad
           fi
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
