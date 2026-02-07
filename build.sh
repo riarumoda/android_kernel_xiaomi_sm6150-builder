@@ -87,16 +87,14 @@ setup_environment() {
     fi
     # TheSillyOk's Exports
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
+    export SILLY_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
+    export SILLY_KSUN_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
     # Simple GPU Algorithm exports
     export SIMPLEGPU_PATCH1="https://github.com/ximi-mojito-test/mojito_krenol/commit/466da67f1ee6a567c9bd60282123a07fc9ac75b5.patch"
     export SIMPLEGPU_PATCH2="https://github.com/ximi-mojito-test/mojito_krenol/commit/f87bd5e18caba7dd0ba0b5c9147d59bb21ff606f.patch"
     export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
-    # JackA1ltman SUSFS export
-    export JACK_SUSFS_PATCH="https://github.com/JackA1ltman/NonGKI_Kernel_Build_2nd/raw/refs/heads/mainline/Patches/Patch/susfs_patch_to_4.14.patch"
-    # vbajs KSU SUSFS Export
-    export VB_KSU_SUSFS_PATCH="https://github.com/vbajs/KernelSU-Next/commit/d2befa1c56c53e11e3f22cbce06f506a7394140f.patch"
 }
 
 # Setup toolchain function
@@ -208,11 +206,10 @@ add_ksu() {
             echo "KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
             # Apply susfs patches
             echo "Applying SUSFS patches..."
-            wget -qO- $JACK_SUSFS_PATCH | patch -s -p1
+            wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1
             # Apply ksu susfs patches
             cd KernelSU-Next
-            git reset --hard 511dfff8218188c412ae758c29e171f0d22889af
-            wget -qO- $VB_KSU_SUSFS_PATCH | patch -s -p1
+            wget -qO- $SILLY_KSUN_SUSFS_PATCH | patch -s -p1
             git config user.email $GIT_EMAIL
             git config user.name $GIT_NAME
             git config set advice.addEmbeddedRepo true
