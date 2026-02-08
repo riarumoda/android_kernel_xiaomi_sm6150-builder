@@ -19,5 +19,4 @@ Compatible with official LineageOS builds for Redmi Note 10 Pro, but since this 
 [crdroidandroid](https://github.com/crdroidandroid) for the ln8000 patches.   
 [backslashxx](https://github.com/backslashxx) for KernelSU & KernelSU scope-minimized manual hooks.   
 [KernelSU-Next](https://github.com/KernelSU-Next) for KernelSU-Next.   
-[TheSillyOk](https://github.com/TheSillyOk) for kpatch fixup patches.    
-[JackA1ltman](https://github.com/JackA1ltman) for SUSFS patches.   
+[TheSillyOk](https://github.com/TheSillyOk) for kpatch fixup & susfs patches.    
