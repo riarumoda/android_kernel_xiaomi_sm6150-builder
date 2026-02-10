@@ -1,4 +1,4 @@
-name: MIUI
+name: OOS
 
 on:
   workflow_dispatch:
@@ -50,15 +50,15 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
-      - name: Add MIUI Patches
+      - name: Add OOS Patches
         run: | 
           cd android_kernel_xiaomi_sm6150/
-          echo "Patching Panel dimensions for MIUI..."
+          echo "Patching Panel dimensions for OOS..."
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/baa9c49c1e728f6abb6f85ecde87a0af90a33e26.patch" | patch -s -p1
-          echo "Patching IR Blaster for MIUI..."
+          echo "Patching IR Blaster for OOS..."
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/f61829440d1748b33db46f7edde6874f854f3977.patch" | patch -s -p1
           wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/d3fbc93e9ca57392bdf921a489af61d4fa095768.patch" | patch -s -p1
-          echo "Enabling SDCARD_FS for MIUI..."
+          echo "Enabling SDCARD_FS for OOS..."
           echo "CONFIG_SDCARD_FS=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           cd ..
 
@@ -91,6 +91,6 @@ jobs:
       - name: Pack & upload artifacts (All builds)
         uses: actions/upload-artifact@v6
         with:
-          name: perf-neon-sweet-miui-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
+          name: perf-neon-sweet-oos-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
           path: |
             AnyKernel3/*
