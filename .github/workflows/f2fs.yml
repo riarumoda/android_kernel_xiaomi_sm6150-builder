@@ -16,7 +16,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [davinci-current, phoenix-current, sweet-current, toco-current, tucana-current, violet-current]
+        build-type: [davinci-current, sweet-current, tucana-current, violet-current]
 
     steps:
       - uses: actions/checkout@v6
@@ -45,11 +45,7 @@ jobs:
           echo "Cloning kernel sources..."
           if [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
@@ -79,12 +75,8 @@ jobs:
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_NEXT --ln8k=FALSE
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig phoenix.config --ksu=KSU_NEXT --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig toco.config --ksu=KSU_NEXT --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "violet-current" ]]; then
@@ -106,21 +98,11 @@ jobs:
             sed -i 's/device.name1=sweet/device.name1=davinci/' AnyKernel3/anykernel.sh
             sed -i 's/device.name2=sweetin/device.name2=davinciin/' AnyKernel3/anykernel.sh
             sed -i 's/sweet (sm6150)/davinci (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=phoenix/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=phoenixin/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/phoenix (sm6150)/g' AnyKernel3/banner
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
             sed -i 's/device.name1=sweet/device.name1=sweet/' AnyKernel3/anykernel.sh
             sed -i 's/device.name2=sweetin/device.name2=sweetin/' AnyKernel3/anykernel.sh
             sed -i 's/sweet (sm6150)/sweet (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/toco (sm6150)/g' AnyKernel3/banner
           elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
             sed -i 's/device.name1=sweet/device.name1=tucana/' AnyKernel3/anykernel.sh
