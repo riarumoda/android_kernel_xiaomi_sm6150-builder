@@ -8,10 +8,10 @@ The naming, Perf Neon, is inspired by a Linux Distribution called KDE Neon, wher
 While it's mostly used for another kernel developers to compare their work with a literal close-to-stock kernel, it's also fulfill the dream of a purists, where they want everything stable but also wanted extra spices on top of it.
 
 # Release schedules
-This kernel follows weekly builds of [devices/sweet/builds](https://download.lineageos.org/devices/sweet/builds), you will get a new kernel build every sunday. You might need to check out the GitHub repo for new releases.
+This kernel follows weekly builds of LineageOS, you will get a new kernel build every sunday. You might need to check out the GitHub repo for new releases.
 
 # Compatibility
-Compatible with official LineageOS builds for Redmi Note 10 Pro, but since this kernel strictly follows [LineageOS/android_kernel_xiaomi_sm6150](https://github.com/LineageOS/android_kernel_xiaomi_sm6150), the compatibility may vary between each releases. Always make sure you have a kernel backup before proceeding. This kernel might gonna work on non-lineage based roms but it is not guaranteed.
+Compatible with official LineageOS builds of [devices/davinci/builds](https://download.lineageos.org/devices/davinci/builds), [devices/sweet/builds](https://download.lineageos.org/devices/sweet/builds), [devices/tucana/builds](https://download.lineageos.org/devices/tucana/builds), [devices/violet/builds](https://download.lineageos.org/devices/violet/builds), but since this kernel strictly follows [LineageOS/android_kernel_xiaomi_sm6150](https://github.com/LineageOS/android_kernel_xiaomi_sm6150), the compatibility may vary between each releases. Always make sure you have a kernel backup before proceeding. This kernel might gonna work on non-lineage based roms but it is not guaranteed.
 
 # Credits
 [TBYOOL](https://github.com/tbyool) for the buildscripts & kernel patches.   
