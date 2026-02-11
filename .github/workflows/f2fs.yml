@@ -16,7 +16,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [current]
+        build-type: [davinci-current, phoenix-current, sweet-current, toco-current, tucana-current, violet-current]
 
     steps:
       - uses: actions/checkout@v6
@@ -42,35 +42,53 @@ jobs:
           if [ -d "$PWD/android_kernel_xiaomi_sm6150" ]; then
             rm -rf android_kernel_xiaomi_sm6150
           fi
-          if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
-          elif [[ "${{ matrix.build-type }}" == "current" ]]; then
+          echo "Cloning kernel sources..."
+          if [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+          elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+          elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
+            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
+          elif [[ "${{ matrix.build-type }}" == "violet-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           fi
+          echo "Copying buildscript..."
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
       - name: Apply F2FS Compression Patch
         run: | 
           cd android_kernel_xiaomi_sm6150/
-          echo "F2FS Compression support"
-          if [[ "${{ matrix.build-type }}" == "current" ]]; then
-            echo "Apply revert patch for current"
-            wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/212f6697ff90336cc993d163411775ec969deeb6.patch" | patch -R -p1
-            wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/694585a55caa3e1873c889ab3aa1c47d93144fad.patch" | patch -R -p1
-            echo "Apply the compression support"
-            wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch" | patch -p1
-          fi
+          echo "Apply revert patch for current"
+          wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/212f6697ff90336cc993d163411775ec969deeb6.patch" | patch -R -p1
+          wget -qO- "https://github.com/xiaomi-sm6150/android_kernel_xiaomi_sm6150/commit/694585a55caa3e1873c889ab3aa1c47d93144fad.patch" | patch -R -p1
+          echo "Apply the compression support"
+          wget -qO- "https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/02baeab5aaf5319e5d68f2319516efed262533ea.patch" | patch -p1
+          echo "Enable the COmpression support"
+          echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/sdmsteppe-perf_defconfig
+          echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/sdmsteppe-perf_defconfig
           cd ..
 
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
-          if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
+          if [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_NEXT --ln8k=FALSE
+          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig phoenix.config --ksu=KSU_NEXT --ln8k=FALSE
+          elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
-          elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
+          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig toco.config --ksu=KSU_NEXT --ln8k=FALSE
+          elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
+          elif [[ "${{ matrix.build-type }}" == "violet-current" ]]; then
+            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_NEXT --ln8k=FALSE
           fi
           cd ..
 
@@ -83,15 +101,41 @@ jobs:
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/Image.gz AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtb.img AnyKernel3/
           cp android_kernel_xiaomi_sm6150/out/arch/arm64/boot/dtbo.img AnyKernel3/
-          if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
-          elif [[ "${{ matrix.build-type }}" == "current" ]]; then
+          if [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=davinci/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=davinciin/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/davinci (sm6150)/g' AnyKernel3/banner
+          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=phoenix/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=phoenixin/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/phoenix (sm6150)/g' AnyKernel3/banner
+          elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=sweet/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=sweetin/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/sweet (sm6150)/g' AnyKernel3/banner
+          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=toco/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=toco/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/toco (sm6150)/g' AnyKernel3/banner
+          elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=tucana/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=tucana/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/tucana (sm6150)/g' AnyKernel3/banner
+          elif [[ "${{ matrix.build-type }}" == "violet-current" ]]; then
+            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name1=sweet/device.name1=violet/' AnyKernel3/anykernel.sh
+            sed -i 's/device.name2=sweetin/device.name2=violet/' AnyKernel3/anykernel.sh
+            sed -i 's/sweet (sm6150)/violet (sm6150)/g' AnyKernel3/banner
           fi
 
       - name: Pack & upload artifacts (All builds)
         uses: actions/upload-artifact@v6
         with:
-          name: perf-neon-sweet-f2fs_compression-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
+          name: perf-neon-${{ matrix.build-type }}-f2fs_compression-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
           path: |
             AnyKernel3/*
