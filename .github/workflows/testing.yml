@@ -2,8 +2,6 @@ name: Testing
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '5 3 * * 0'
 
 permissions:
   contents: write
@@ -16,7 +14,7 @@ jobs:
       date: ${{ steps.ts.outputs.DATE }}
     strategy:
       matrix:
-        build-type: [davinci-legacy, davinci-current, phoenix-legacy, phoenix-current, sweet-legacy, sweet-current, toco-legacy, toco-current, tucana-legacy, tucana-current, violet-legacy, violet-current]
+        build-type: [davinci-legacy, davinci-current, sweet-legacy, sweet-current, tucana-legacy, tucana-current, violet-legacy, violet-current]
 
     steps:
       - uses: actions/checkout@v6
@@ -47,17 +45,9 @@ jobs:
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
           elif [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
-          elif [[ "${{ matrix.build-type }}" == "phoenix-legacy" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           elif [[ "${{ matrix.build-type }}" == "sweet-legacy" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
-          elif [[ "${{ matrix.build-type }}" == "toco-legacy" ]]; then
-            git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-23.2
           elif [[ "${{ matrix.build-type }}" == "tucana-legacy" ]]; then
             git clone https://github.com/LineageOS/android_kernel_xiaomi_sm6150 --depth=1 -b lineage-21
@@ -80,18 +70,10 @@ jobs:
             ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_BLXX --ln8k=FALSE
-          elif [[ "${{ matrix.build-type }}" == "phoenix-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig phoenix.config --ksu=KSU_BLXX --ln8k=FALSE
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig phoenix.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "sweet-legacy" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
             ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
-          elif [[ "${{ matrix.build-type }}" == "toco-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig toco.config --ksu=KSU_BLXX --ln8k=FALSE
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig toco.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "tucana-legacy" ]]; then
             ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
@@ -122,16 +104,6 @@ jobs:
             sed -i 's/device.name1=sweet/device.name1=davinci/' AnyKernel3/anykernel.sh
             sed -i 's/device.name2=sweetin/device.name2=davinciin/' AnyKernel3/anykernel.sh
             sed -i 's/sweet (sm6150)/davinci (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "phoenix-legacy" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=phoenix/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=phoenixin/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/phoenix (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "phoenix-current" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=phoenix/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=phoenixin/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/phoenix (sm6150)/g' AnyKernel3/banner
           elif [[ "${{ matrix.build-type }}" == "sweet-legacy" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
             sed -i 's/device.name1=sweet/device.name1=sweet/' AnyKernel3/anykernel.sh
@@ -142,16 +114,6 @@ jobs:
             sed -i 's/device.name1=sweet/device.name1=sweet/' AnyKernel3/anykernel.sh
             sed -i 's/device.name2=sweetin/device.name2=sweetin/' AnyKernel3/anykernel.sh
             sed -i 's/sweet (sm6150)/sweet (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "toco-legacy" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/toco (sm6150)/g' AnyKernel3/banner
-          elif [[ "${{ matrix.build-type }}" == "toco-current" ]]; then
-            sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name1=sweet/device.name1=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/device.name2=sweetin/device.name2=toco/' AnyKernel3/anykernel.sh
-            sed -i 's/sweet (sm6150)/toco (sm6150)/g' AnyKernel3/banner
           elif [[ "${{ matrix.build-type }}" == "tucana-legacy" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-14/' AnyKernel3/anykernel.sh
             sed -i 's/device.name1=sweet/device.name1=tucana/' AnyKernel3/anykernel.sh
@@ -174,69 +136,9 @@ jobs:
             sed -i 's/sweet (sm6150)/violet (sm6150)/g' AnyKernel3/banner
           fi
 
-      - name: Pack kernel with AnyKernel3
-        run: |
-          ZIPNAME="perf-neon-${{ matrix.build-type }}-weekly-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}.zip"
-          cd AnyKernel3
-          zip -rq9 "../$ZIPNAME" ./*
-          cd ..
-
-      - name: Upload artifacts (All builds)
+      - name: Pack & upload artifacts (All builds)
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.build-type }}
+          name: perf-neon-${{ matrix.build-type }}-testing-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
           path: |
-            *.zip
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download all build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-
-      - name: List downloaded zips
-        run: ls -lah artifacts
-
-      - name: Timestamp
-        id: ts
-        run: |
-          FANCYDATE=$(date +'%Y/%m/%d')
-          echo "FANCYDATE=$FANCYDATE" >> $GITHUB_OUTPUT
-
-      - name: Create Release and Upload builds
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: kernel-weekly-${{ needs.build.outputs.timestamp }}
-          name: Weekly - ${{ steps.ts.outputs.FANCYDATE }}
-          draft: false
-          prerelease: false
-          body: |
-            > [!NOTE]   
-            > - The current builds support Android 11 to 16, meanwhile legacy builds support Android 11 to 14.
-            > - This build have KernelSU integration with backslashxx's KernelSU.   
-            > - KernelSU latest manager for backslashxx's KernelSU can be found in [here](https://github.com/backslashxx/KernelSU/releases) or in [here](https://t.me/kowsu_build).    
-               
-            > [!CAUTION]   
-            > - Always backup your boot & dtbo image first before proceeding!   
-          files: |
-            artifacts/davinci-legacy/*.zip
-            artifacts/davinci-current/*.zip
-            artifacts/phoenix-legacy/*.zip
-            artifacts/phoenix-current/*.zip
-            artifacts/sweet-legacy/*.zip
-            artifacts/sweet-current/*.zip
-            artifacts/toco-legacy/*.zip
-            artifacts/toco-current/*.zip
-            artifacts/tucana-legacy/*.zip
-            artifacts/tucana-current/*.zip
-            artifacts/violet-legacy/*.zip
-            artifacts/violet-current/*.zip
-          overwrite_files: true
+            AnyKernel3/*
