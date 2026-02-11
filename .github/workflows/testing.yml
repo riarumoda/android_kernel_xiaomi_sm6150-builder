@@ -53,9 +53,9 @@ jobs:
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_NEXT --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_NEXT --ln8k=FALSE
           fi
           cd ..
 
@@ -73,13 +73,13 @@ jobs:
           elif [[ "${{ matrix.build-type }}" == "current" ]]; then
             sed -i 's/supported.versions=11-16/supported.versions=11-16/' AnyKernel3/anykernel.sh
           fi
-          sed -i 's/device.name1=sweet/device.name1=tucana/' AnyKernel3/anykernel.sh
-          sed -i 's/device.name2=sweetin/device.name2=tucana/' AnyKernel3/anykernel.sh
-          sed -i 's/sweet (sm6150)/tucana (sm6150)/g' AnyKernel3/banner
+          sed -i 's/device.name1=sweet/device.name1=violet/' AnyKernel3/anykernel.sh
+          sed -i 's/device.name2=sweetin/device.name2=violet/' AnyKernel3/anykernel.sh
+          sed -i 's/sweet (sm6150)/violet (sm6150)/g' AnyKernel3/banner
 
       - name: Pack & upload artifacts (All builds)
         uses: actions/upload-artifact@v6
         with:
-          name: perf-neon-tucana-testing-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
+          name: perf-neon-violet-testing-${{ matrix.build-type }}-${{ steps.ts.outputs.DATE }}-${{ steps.ts.outputs.TIME }}
           path: |
             AnyKernel3/*
