@@ -149,9 +149,6 @@ add_patches() {
     echo "CONFIG_FSCACHE_HISTOGRAM=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_SECURITY_SELINUX_DEVELOP=y" >> $MAIN_DEFCONFIG
     echo "CONFIG_IOSCHED_BFQ=y" >> $MAIN_DEFCONFIG
-    echo "# CONFIG_INIT_STACK_NONE is not set" >> $MAIN_DEFCONFIG
-    echo "CONFIG_INIT_STACK_ALL_ZERO=y" >> $MAIN_DEFCONFIG
-    echo "CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y" >> $MAIN_DEFCONFIG
     # Apply kernel rename to defconfig
     sed -i 's/CONFIG_LOCALVERSION="-perf"/CONFIG_LOCALVERSION="-perf-neon"/' $MAIN_DEFCONFIG
     # Apply O3 flags into Kernel Makefile
