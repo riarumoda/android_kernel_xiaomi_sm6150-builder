@@ -67,6 +67,8 @@ jobs:
           echo "Enable the COmpression support"
           echo "CONFIG_F2FS_FS_COMPRESSION=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           echo "CONFIG_F2FS_FS_LZ4=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
+          echo "TEMP: nomount support"
+          wget -qO- "https://github.com/maxsteeel/nomount/raw/refs/heads/master/patches/experimental/nomount-kernel-4.14.patch" | patch -p1
           cd ..
 
       - name: Compile the kernel
