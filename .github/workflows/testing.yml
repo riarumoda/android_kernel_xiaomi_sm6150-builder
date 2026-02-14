@@ -62,6 +62,13 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
+      - name: Try to apply nomount support
+        run: |
+          cd android_kernel_xiaomi_sm6150/
+          echo "Applying nomount support patch..."
+          wget -qO- "https://github.com/maxsteeel/nomount/raw/refs/heads/master/patches/experimental/nomount-kernel-4.14.patch" | patch -p1 --fuzz=10
+          cd ..
+
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
