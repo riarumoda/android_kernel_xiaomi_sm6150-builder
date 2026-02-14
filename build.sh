@@ -211,7 +211,7 @@ add_ksu() {
             echo "Applying SUSFS patches..."
             wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1
             # Apply nomount support
-            wget -qO- $MAXSTEEL_NOMOUNT_PATCH | patch -s -p1 --fuzz=3
+            wget -qO- $MAXSTEEL_NOMOUNT_PATCH | patch -s -p1
             # Apply ksu susfs patches
             cd KernelSU-Next
             wget -qO- $SILLY_KSUN_SUSFS_PATCH | patch -s -p1
