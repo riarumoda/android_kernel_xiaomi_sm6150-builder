@@ -95,6 +95,8 @@ setup_environment() {
     export SIMPLEGPU_PATCH1="https://github.com/ximi-mojito-test/mojito_krenol/commit/466da67f1ee6a567c9bd60282123a07fc9ac75b5.patch"
     export SIMPLEGPU_PATCH2="https://github.com/ximi-mojito-test/mojito_krenol/commit/f87bd5e18caba7dd0ba0b5c9147d59bb21ff606f.patch"
     export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
+    # maxsteel's nomount exports
+    export MAXSTEEL_NOMOUNT_PATCH="https://github.com/maxsteeel/nomount/raw/refs/heads/master/patches/experimental/nomount-kernel-4.14.patch"
 }
 
 # Setup toolchain function
@@ -208,6 +210,8 @@ add_ksu() {
             # Apply susfs patches
             echo "Applying SUSFS patches..."
             wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1
+            # Apply nomount support
+            wget -qO- $MAXSTEEL_NOMOUNT_PATCH | patch -s -p1 --fuzz=3
             # Apply ksu susfs patches
             cd KernelSU-Next
             wget -qO- $SILLY_KSUN_SUSFS_PATCH | patch -s -p1
@@ -230,6 +234,8 @@ add_ksu() {
             echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> $MAIN_DEFCONFIG
             # Disable custom susfs configs
             echo "CONFIG_KSU_SUSFS_TRY_UMOUNT=n" >> $MAIN_DEFCONFIG
+            # enable nomount support
+            echo "CONFIG_NOMOUNT=y" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
