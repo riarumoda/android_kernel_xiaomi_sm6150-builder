@@ -209,9 +209,9 @@ add_ksu() {
             echo "KSU_MANUAL_HOOK=y" >> $MAIN_DEFCONFIG
             # Apply susfs patches
             echo "Applying SUSFS patches..."
-            wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1
+            wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1 --fuzz=5
             # Apply nomount support
-            wget -qO- $MAXSTEEL_NOMOUNT_PATCH | patch -s -p1
+            wget -qO- $MAXSTEEL_NOMOUNT_PATCH | patch -s -p1 --fuzz=5
             # Apply ksu susfs patches
             cd KernelSU-Next
             wget -qO- $SILLY_KSUN_SUSFS_PATCH | patch -s -p1
