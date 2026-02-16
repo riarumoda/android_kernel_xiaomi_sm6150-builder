@@ -62,33 +62,26 @@ jobs:
           cp build.sh android_kernel_xiaomi_sm6150/
           chmod +x ./android_kernel_xiaomi_sm6150/build.sh
 
-      - name: Try to apply nomount support
-        run: |
-          cd android_kernel_xiaomi_sm6150/
-          echo "Applying nomount support patch..."
-          wget -qO- "https://github.com/maxsteeel/nomount/raw/refs/heads/master/patches/experimental/nomount-kernel-4.14.patch" | patch -p1 --fuzz=10
-          cd ..
-
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "davinci-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "davinci-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "sweet-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "sweet-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_NEXT --ln8k=TRUE
+            ./build.sh sdmsteppe-perf_defconfig sweet.config --ksu=KSU_BLXX --ln8k=TRUE
           elif [[ "${{ matrix.build-type }}" == "tucana-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "tucana-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig tucana.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "violet-legacy" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_BLXX --ln8k=FALSE
           elif [[ "${{ matrix.build-type }}" == "violet-current" ]]; then
-            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_NEXT --ln8k=FALSE
+            ./build.sh sdmsteppe-perf_defconfig violet.config --ksu=KSU_BLXX --ln8k=FALSE
           fi
           cd ..
 
