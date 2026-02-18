@@ -86,6 +86,7 @@ setup_environment() {
         exit 1
     fi
     # TheSillyOk's Exports
+    export SILLY_LTO_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/fix_lto.patch"
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     export SILLY_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
     export SILLY_KSUN_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
@@ -135,6 +136,14 @@ add_patches() {
     wget -qO- $SIMPLEGPU_PATCH2 | patch -s -p1
     wget -qO- $SIMPLEGPU_PATCH3 | patch -s -p1
     echo "CONFIG_SIMPLE_GPU_ALGORITHM=y" >> $MAIN_DEFCONFIG
+    # Enable LTO on non KSU_NEXT builds
+    if [[ "$KSU_SETUP_URI" != *"KernelSU-Next/KernelSU-Next"* ]]; then
+        echo "Applying LTO patch for non KSU_NEXT builds..."
+        wget -qO- $SILLY_LTO_PATCH | patch -s -p1 --fuzz=3
+        echo "CONFIG_LTO_CLANG=y" >> $MAIN_DEFCONFIG
+    else 
+        echo "Skipping LTO patch for KSU_NEXT build."
+    fi
     # Apply misc patches
     echo "Applying misc patches..."
     wget -qO- $MISC_PATCH1 | patch -s -p1
