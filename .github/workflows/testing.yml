@@ -65,9 +65,6 @@ jobs:
       - name: Compile the kernel
         run: |
           cd android_kernel_xiaomi_sm6150/
-          echo "Patching LTO stuff..."
-          wget -qO- "https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/fix_lto.patch" | patch -p1 --fuzz=3
-          echo "CONFIG_LTO_CLANG=y" >> arch/arm64/configs/vendor/sdmsteppe-perf_defconfig
           echo "Starting to compile..."
           if [[ "${{ matrix.build-type }}" == "davinci-legacy" ]]; then
             ./build.sh sdmsteppe-perf_defconfig davinci.config --ksu=KSU_BLXX --ln8k=FALSE
