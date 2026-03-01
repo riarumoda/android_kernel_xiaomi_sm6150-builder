@@ -37,7 +37,7 @@ setup_environment() {
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebc23ea38f787745590c96035cb83cd11eb6b0e7.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=KSU_NEXT" ]]; then
         export KSU_SETUP_URI="https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh"
-        export KSU_BRANCH="legacy"
+        export KSU_BRANCH="legacy_susfs"
         export KSU_GENERAL_PATCH="https://github.com/ximi-mojito-test/mojito_krenol/commit/8e25004fdc74d9bf6d902d02e402620c17c692df.patch"
     elif [[ "$KERNELSU_SELECTOR" == "--ksu=NONE" ]]; then
         export KSU_SETUP_URI=""
@@ -89,7 +89,6 @@ setup_environment() {
     export SILLY_LTO_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/fix_lto.patch"
     export SILLY_KPATCH_NEXT_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/kpatch_fix.patch"
     export SILLY_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/susfs-2.0.0.patch"
-    export SILLY_KSUN_SUSFS_PATCH="https://github.com/TheSillyOk/kernel_ls_patches/raw/refs/heads/master/KSUN/KSUN-SUSFS-2.0.0.patch"
     # KernelSU umount patch
     export KSU_UMOUNT_PATCH="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/64db0dfa2f8aa6c519dbf21eb65c9b89643cda3d.patch"
     # Simple GPU Algorithm exports
@@ -222,15 +221,6 @@ add_ksu() {
             # Apply susfs patches
             echo "Applying SUSFS patches..."
             wget -qO- $SILLY_SUSFS_PATCH | patch -s -p1 --fuzz=5
-            # Apply ksu susfs patches
-            cd KernelSU-Next
-            wget -qO- $SILLY_KSUN_SUSFS_PATCH | patch -s -p1
-            git config user.email $GIT_EMAIL
-            git config user.name $GIT_NAME
-            git config set advice.addEmbeddedRepo true
-            git add .
-            git commit -m "cleanup: applied patches before build" &> /dev/null
-            cd ..
             # Enable susfs configs
             echo "CONFIG_KSU_SUSFS=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> $MAIN_DEFCONFIG
@@ -242,8 +232,6 @@ add_ksu() {
             echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> $MAIN_DEFCONFIG
             echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> $MAIN_DEFCONFIG
-            # Disable custom susfs configs
-            echo "CONFIG_KSU_SUSFS_TRY_UMOUNT=n" >> $MAIN_DEFCONFIG
         fi
     else
         echo "No KernelSU to set up."
