@@ -95,6 +95,8 @@ setup_environment() {
     export SIMPLEGPU_PATCH1="https://github.com/ximi-mojito-test/mojito_krenol/commit/466da67f1ee6a567c9bd60282123a07fc9ac75b5.patch"
     export SIMPLEGPU_PATCH2="https://github.com/ximi-mojito-test/mojito_krenol/commit/f87bd5e18caba7dd0ba0b5c9147d59bb21ff606f.patch"
     export SIMPLEGPU_PATCH3="https://github.com/ximi-mojito-test/mojito_krenol/commit/ebf97a47dc43b1285602c4d3cc9667377d021f1e.patch"
+    # Baseband Guard exports
+    export BBG_SETUP_URI="https://github.com/vc-teahouse/Baseband-guard/raw/main/setup.sh"
     # Misc optimization patches
     export MISC_PATCH1="https://github.com/tbyool/android_kernel_xiaomi_sm6150/commit/87734162e802e9e9a1b2e57c786ca582de97a0b5.patch"
 }
@@ -143,6 +145,11 @@ add_patches() {
     else 
         echo "Skipping LTO patch for KSU_NEXT build."
     fi
+    # Setup Baseband Guard
+    echo "Setting up Baseband Guard..."
+    curl -LSs $BBG_SETUP_URI | bash
+    echo "CONFIG_BBG=y" >> $MAIN_DEFCONFIG
+    sed -i '/CONFIG_LSM=/s/"$/ ,baseband_guard"/' $MAIN_DEFCONFIG
     # Apply misc patches
     echo "Applying misc patches..."
     wget -qO- $MISC_PATCH1 | patch -s -p1
