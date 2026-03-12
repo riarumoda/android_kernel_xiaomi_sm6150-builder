@@ -149,7 +149,7 @@ add_patches() {
     echo "Setting up Baseband Guard..."
     curl -LSs $BBG_SETUP_URI | bash
     echo "CONFIG_BBG=y" >> $MAIN_DEFCONFIG
-    sed -i '/CONFIG_LSM=/s/"$/ ,baseband_guard"/' $MAIN_DEFCONFIG
+    # sed -i '/CONFIG_LSM=/s/"$/ ,baseband_guard"/' $MAIN_DEFCONFIG
     # Apply misc patches
     echo "Applying misc patches..."
     wget -qO- $MISC_PATCH1 | patch -s -p1
