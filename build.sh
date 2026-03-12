@@ -146,11 +146,15 @@ add_patches() {
     else 
         echo "Skipping LTO patch for KSU_NEXT build."
     fi
-    # Setup Baseband Guard
-    echo "Setting up Baseband Guard..."
-    curl -LSs $BBG_SETUP_URI | bash
-    echo "CONFIG_BBG=y" >> $MAIN_DEFCONFIG
-    # sed -i '/CONFIG_LSM=/s/"$/ ,baseband_guard"/' $MAIN_DEFCONFIG
+    # Setup Baseband Guard on non KSU_NEXT builds
+    if [[ "$KSU_SETUP_URI" != *"KernelSU-Next/KernelSU-Next"* ]]; then
+        echo "Setting up Baseband Guard..."
+        curl -LSs $BBG_SETUP_URI | bash
+        echo "CONFIG_BBG=y" >> $MAIN_DEFCONFIG
+        # sed -i '/CONFIG_LSM=/s/"$/ ,baseband_guard"/' $MAIN_DEFCONFIG
+    else
+        echo "Skipping Baseband Guard setup for KSU_NEXT build."
+    fi
     # Apply misc patches
     echo "Applying misc patches..."
     wget -qO- $MISC_PATCH1 | patch -s -p1
